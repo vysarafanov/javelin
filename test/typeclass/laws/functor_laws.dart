@@ -26,10 +26,10 @@ class FunctorLaws {
     Kind<F, int> f(int a),
   ) =>
       check(
-        forall1(
+        forall(
           IntGen().map(f),
           (Kind<F, int> fa) =>
-              functor.map<int, int>(fa, identity).underTheLaw(eq, fa),
+              functor.map<int, int>(fa, identity).equalUnderTheLaw(eq, fa),
         ),
       );
 
@@ -45,7 +45,7 @@ class FunctorLaws {
           FunctionAtoB.gen<int, int>(IntGen()),
           (Kind<F, int> fa, int Function(int) f, int Function(int) g) => functor
               .map<int, int>(functor.map<int, int>(fa, f), g)
-              .underTheLaw(eq, functor.map(fa, f.andThen(g))),
+              .equalUnderTheLaw(eq, functor.map(fa, f.andThen(g))),
         ),
       );
 }

@@ -17,10 +17,10 @@ abstract class Option<A> implements Kind<ForOption, A> {
   @override
   bool operator ==(other) => other is Option<A> ? eq().eqv(this, other) : false;
 
+  static const Invariant<ForOption> invariant = OptionType();
   static const Functor<ForOption> functor = OptionType();
   static const Applicative<ForOption> applicative = OptionType();
   static const Monad<ForOption> monad = OptionType();
-
   static Show<Kind<ForOption, A>> show<A>() => OptionShow();
   static Eq<Kind<ForOption, A>> eq<A>() => OptionEq();
 }

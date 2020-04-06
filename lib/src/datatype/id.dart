@@ -16,6 +16,7 @@ class Id<A> implements Kind<ForId, A> {
   @override
   bool operator ==(other) => other is Id<A> ? eq().eqv(this, other) : false;
 
+  static const Invariant<ForId> invariant = IdType();
   static const Functor<ForId> functor = IdType();
   static const Applicative<ForId> applicative = IdType();
   static const Monad<ForId> monad = IdType();

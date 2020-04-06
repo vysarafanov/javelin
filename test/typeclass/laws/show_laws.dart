@@ -5,22 +5,22 @@ import '../../law.dart';
 import '../../quick_check.dart';
 
 class ShowLaws {
-  static Iterable<Law> laws<F>(Show<F> show, Eq<F> eq, F cf(int c)) sync* {
+  static Iterable<Law> laws<F>(Show<F> show, Eq<F> eq, F f(int a)) sync* {
     yield Law(
       'Show Laws: equality',
-      () => equalShow(show, eq, cf),
+      () => equalShow(show, eq, f),
     );
   }
 
   static void equalShow<F>(
     Show<F> show,
     Eq<F> eq,
-    F cf(int c),
+    F f(int c),
   ) =>
       check(
-        forall1(IntGen(), (value) {
-          final a = cf(value);
-          final b = cf(value);
+        forall(IntGen(), (value) {
+          final a = f(value);
+          final b = f(value);
           return eq.eqv(a, b) && show.show(a) == show.show(b);
         }),
       );
