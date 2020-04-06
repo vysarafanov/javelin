@@ -1,6 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:test/test.dart';
 
+import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../laws/show_laws.dart';
 import '../../law.dart';
@@ -12,6 +13,9 @@ void main() {
       Id.eq<int>(),
       Id.applicative.pure,
     ).check();
+  });
+  group('Id - Eq', () {
+    EqLaws.laws(Id.eq<int>(), Id.applicative.pure).check();
   });
   group(('Id - Functor'), () {
     FunctorLaws.laws(

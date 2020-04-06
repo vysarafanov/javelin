@@ -1,6 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:test/test.dart';
 
+import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../../law.dart';
 import '../laws/show_laws.dart';
@@ -12,6 +13,9 @@ void main() {
       Option.eq<int>(),
       Option.applicative.pure,
     ).check();
+  });
+  group('Option - Eq', () {
+    EqLaws.laws(Option.eq<int>(), Option.applicative.pure).check();
   });
   group(('Option - Functor'), () {
     FunctorLaws.laws(
