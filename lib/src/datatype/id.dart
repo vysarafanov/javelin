@@ -11,16 +11,16 @@ class Id<A> implements Kind<ForId, A> {
   Id(this.value);
 
   @override
-  String toString() => show.show(this);
+  String toString() => show().show(this);
 
   @override
-  bool operator ==(other) => other is Id<A> ? eq.eqv(this, other) : false;
+  bool operator ==(other) => other is Id<A> ? eq().eqv(this, other) : false;
 
   static const Functor<ForId> functor = IdType();
   static const Applicative<ForId> applicative = IdType();
   static const Monad<ForId> monad = IdType();
-  static const Show<ForId> show = IdType();
-  static const Eq<ForId> eq = IdType();
+  static Show<Kind<ForId, A>> show<A>() => IdShow<A>();
+  static Eq<Kind<ForId, A>> eq<A>() => IdEq<A>();
 }
 
 extension IdExt<A> on Id<A> {

@@ -5,7 +5,7 @@ import '../laws/functor_laws.dart';
 
 void main() {
   group(('Option - Functor'), () {
-    FunctorLaws.laws(Option.functor, Option.eq, Option.applicative.pure)
+    FunctorLaws.laws(Option.functor, Option.eq<int>(), Option.applicative.pure)
         .forEach((law) {
       test(law.name, law.test);
     });

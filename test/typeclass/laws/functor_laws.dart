@@ -7,7 +7,7 @@ import '../laws/law.dart';
 class FunctorLaws {
   static Iterable<Law> laws<F>(
     Functor<F> functor,
-    Eq<F> eq,
+    Eq<Kind<F, int>> eq,
     Kind<F, int> f(int a),
   ) sync* {
     yield Law(
@@ -22,19 +22,20 @@ class FunctorLaws {
 
   static void covariantIdentity<F>(
     Functor<F> functor,
-    Eq<F> eq,
+    Eq<Kind<F, int>> eq,
     Kind<F, int> f(int a),
   ) =>
       check(
         forall1(
           IntGen().map(f),
-          (fa) => functor.map(fa, identity).underTheLaw(eq, fa),
+          (Kind<F, int> fa) =>
+              functor.map<int, int>(fa, identity).underTheLaw(eq, fa),
         ),
       );
 
   static void covariantComposition<F>(
     Functor<F> functor,
-    Eq<F> eq,
+    Eq<Kind<F, int>> eq,
     Kind<F, int> f(int a),
   ) =>
       check(

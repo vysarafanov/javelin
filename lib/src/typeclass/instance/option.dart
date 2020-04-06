@@ -3,8 +3,6 @@ import 'package:javelin/src/datatype/option.dart';
 
 class OptionType
     with
-        OptionShow,
-        OptionEq,
         Invariant<ForOption>,
         Functor<ForOption>,
         OptionApplicative,
@@ -46,18 +44,22 @@ mixin OptionMonad implements Monad<ForOption> {
 /*
 * Show instance for Option datatype
 */
-mixin OptionShow implements Show<ForOption> {
+class OptionShow<A> implements Show<Kind<ForOption, A>> {
+  const OptionShow();
+
   @override
-  String show<A>(Kind<ForOption, A> fa) =>
+  String show(Kind<ForOption, A> fa) =>
       fa.fix().fold(() => 'None()', (value) => 'Some($value)');
 }
 
 /*
 * Eq instance for Option datatype
 */
-mixin OptionEq implements Eq<ForOption> {
+class OptionEq<A> implements Eq<Kind<ForOption, A>> {
+  const OptionEq();
+
   @override
-  bool eqv<A>(Kind<ForOption, A> a, Kind<ForOption, A> b) => a.fix().fold(
+  bool eqv(Kind<ForOption, A> a, Kind<ForOption, A> b) => a.fix().fold(
       () => b.fix().fold(
             () => true,
             (_) => false,

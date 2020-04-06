@@ -8,5 +8,5 @@ class Law {
 }
 
 extension KindExt<F, A> on Kind<F, A> {
-  bool underTheLaw(Eq<F> eq, Kind<F, A> b) => eq.eqv(this, b);
+  bool underTheLaw(Eq<Kind<F, A>> eq, Kind<F, A> b) => eq.eqv(this, b);
 }

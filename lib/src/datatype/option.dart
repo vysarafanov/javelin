@@ -12,16 +12,17 @@ abstract class Option<A> implements Kind<ForOption, A> {
   static Option<A> none<A>() => _None();
 
   @override
-  String toString() => show.show(this);
+  String toString() => show().show(this);
 
   @override
-  bool operator ==(other) => other is Option<A> ? eq.eqv(this, other) : false;
+  bool operator ==(other) => other is Option<A> ? eq().eqv(this, other) : false;
 
   static const Functor<ForOption> functor = OptionType();
   static const Applicative<ForOption> applicative = OptionType();
   static const Monad<ForOption> monad = OptionType();
-  static const Show<ForOption> show = OptionType();
-  static const Eq<ForOption> eq = OptionType();
+
+  static Show<Kind<ForOption, A>> show<A>() => OptionShow();
+  static Eq<Kind<ForOption, A>> eq<A>() => OptionEq();
 }
 
 extension OptionExt<A> on Option<A> {
