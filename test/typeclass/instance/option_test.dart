@@ -1,6 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:test/test.dart';
 
+import '../laws/applicative_laws.dart';
 import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../../law.dart';
@@ -15,6 +16,7 @@ Iterable<Law> optionLaws() sync* {
       Option.invariant, Option.eq<int>(), Option.applicative.pure);
   yield* FunctorLaws.laws(
       Option.functor, Option.eq<int>(), Option.applicative.pure);
+  yield* ApplicativeLaws.laws(Option.applicative, Option.eq<int>());
 }
 
 void main() {

@@ -1,7 +1,15 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/datatype/id.dart';
 
-class IdType with Invariant<ForId>, Functor<ForId>, IdApplicative, IdMonad {
+class IdType
+    with
+        Invariant<ForId>,
+        Functor<ForId>,
+        Apply<ForId>,
+        Applicative<ForId>,
+        Monad<ForId>,
+        IdApplicative,
+        IdMonad {
   const IdType();
 }
 

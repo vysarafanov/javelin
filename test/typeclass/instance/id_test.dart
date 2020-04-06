@@ -1,7 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
-import 'package:javelin/javelin_typeclass.dart';
 import 'package:test/test.dart';
 
+import '../laws/applicative_laws.dart';
 import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../laws/invariant_laws.dart';
@@ -13,6 +13,7 @@ Iterable<Law> idLaws() sync* {
   yield* EqLaws.laws(Id.eq<int>(), Id.applicative.pure);
   yield* InvariantLaws.laws(Id.invariant, Id.eq<int>(), Id.applicative.pure);
   yield* FunctorLaws.laws(Id.functor, Id.eq<int>(), Id.applicative.pure);
+  yield* ApplicativeLaws.laws(Id.applicative, Id.eq<int>());
 }
 
 void main() {

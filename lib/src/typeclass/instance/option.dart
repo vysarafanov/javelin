@@ -5,6 +5,9 @@ class OptionType
     with
         Invariant<ForOption>,
         Functor<ForOption>,
+        Apply<ForOption>,
+        Applicative<ForOption>,
+        Monad<ForOption>,
         OptionApplicative,
         OptionMonad {
   const OptionType();
