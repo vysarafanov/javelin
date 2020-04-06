@@ -6,22 +6,16 @@ import '../laws/functor_laws.dart';
 import '../../law.dart';
 import '../laws/show_laws.dart';
 
+Iterable<Law> optionLaws() sync* {
+  yield* ShowLaws.laws(
+      Option.show(), Option.eq<int>(), Option.applicative.pure);
+  yield* EqLaws.laws(Option.eq<int>(), Option.applicative.pure);
+  yield* FunctorLaws.laws(
+      Option.functor, Option.eq<int>(), Option.applicative.pure);
+}
+
 void main() {
-  group('Option - Show', () {
-    ShowLaws.laws(
-      Option.show(),
-      Option.eq<int>(),
-      Option.applicative.pure,
-    ).check();
-  });
-  group('Option - Eq', () {
-    EqLaws.laws(Option.eq<int>(), Option.applicative.pure).check();
-  });
-  group(('Option - Functor'), () {
-    FunctorLaws.laws(
-      Option.functor,
-      Option.eq<int>(),
-      Option.applicative.pure,
-    ).check();
+  group('Option typeclass', () {
+    optionLaws().check();
   });
 }
