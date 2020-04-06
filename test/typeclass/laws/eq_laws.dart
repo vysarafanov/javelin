@@ -5,37 +5,37 @@ import '../../law.dart';
 import '../../quick_check.dart';
 
 class EqLaws {
-  static Iterable<Law> laws<F>(Eq<F> eq, F f(int c)) sync* {
-    yield Law('Eq Laws: reflexivity', () => reflexivityEquality(eq, f));
-    yield Law('Eq Laws: commutativity', () => commutativeEquality(eq, f));
-    yield Law('Eq Laws: transitivity', () => transitiveEquality(eq, f));
+  static Iterable<Law> laws<F>(Eq<F> EQ, F f(int c)) sync* {
+    yield Law('Eq Laws: reflexivity', () => reflexivityEquality(EQ, f));
+    yield Law('Eq Laws: commutativity', () => commutativeEquality(EQ, f));
+    yield Law('Eq Laws: transitivity', () => transitiveEquality(EQ, f));
   }
 
-  static void reflexivityEquality<F>(Eq<F> eq, F f(int c)) => check(forall(
+  static void reflexivityEquality<F>(Eq<F> EQ, F f(int c)) => check(forall(
         IntGen(),
         (value) {
           final a = f(value);
-          return eq.eqv(a, a);
+          return EQ.eqv(a, a);
         },
       ));
 
-  static void commutativeEquality<F>(Eq<F> eq, F f(int c)) => check(forall(
+  static void commutativeEquality<F>(Eq<F> EQ, F f(int c)) => check(forall(
         IntGen(),
         (value) {
           final a = f(value);
           final b = f(value);
-          return eq.eqv(a, b) == eq.eqv(b, a);
+          return EQ.eqv(a, b) == EQ.eqv(b, a);
         },
       ));
 
-  static void transitiveEquality<F>(Eq<F> eq, F f(int c)) => check(forall(
+  static void transitiveEquality<F>(Eq<F> EQ, F f(int c)) => check(forall(
         IntGen(),
         (value) {
           final a = f(value);
           final b = f(value);
           final c = f(value);
 
-          return !(eq.eqv(a, b) && eq.eqv(b, c)) || eq.eqv(a, c);
+          return !(EQ.eqv(a, b) && EQ.eqv(b, c)) || EQ.eqv(a, c);
         },
       ));
 }

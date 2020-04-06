@@ -6,36 +6,36 @@ import '../../quick_check.dart';
 
 class FunctorLaws {
   static Iterable<Law> laws<F>(
-    Functor<F> functor,
-    Eq<Kind<F, int>> eq,
+    Functor<F> FN,
+    Eq<Kind<F, int>> EQ,
     Kind<F, int> f(int a),
   ) sync* {
     yield Law(
       'Functor Laws: Covariant Identity',
-      () => covariantIdentity(functor, eq, f),
+      () => covariantIdentity(FN, EQ, f),
     );
     yield Law(
       'Functor Laws: Covariant Composition',
-      () => covariantComposition(functor, eq, f),
+      () => covariantComposition(FN, EQ, f),
     );
   }
 
   static void covariantIdentity<F>(
-    Functor<F> functor,
-    Eq<Kind<F, int>> eq,
+    Functor<F> FN,
+    Eq<Kind<F, int>> EQ,
     Kind<F, int> f(int a),
   ) =>
       check(
         forall(
           IntGen().map(f),
           (Kind<F, int> fa) =>
-              functor.map<int, int>(fa, identity).equalUnderTheLaw(eq, fa),
+              FN.map<int, int>(fa, identity).equalUnderTheLaw(EQ, fa),
         ),
       );
 
   static void covariantComposition<F>(
-    Functor<F> functor,
-    Eq<Kind<F, int>> eq,
+    Functor<F> FN,
+    Eq<Kind<F, int>> EQ,
     Kind<F, int> f(int a),
   ) =>
       check(
@@ -43,9 +43,9 @@ class FunctorLaws {
           IntGen().map(f),
           FunctionAtoB.gen<int, int>(IntGen()),
           FunctionAtoB.gen<int, int>(IntGen()),
-          (Kind<F, int> fa, int Function(int) f, int Function(int) g) => functor
-              .map<int, int>(functor.map<int, int>(fa, f), g)
-              .equalUnderTheLaw(eq, functor.map(fa, f.andThen(g))),
+          (Kind<F, int> fa, int Function(int) f, int Function(int) g) => FN
+              .map<int, int>(FN.map<int, int>(fa, f), g)
+              .equalUnderTheLaw(EQ, FN.map(fa, f.andThen(g))),
         ),
       );
 }
