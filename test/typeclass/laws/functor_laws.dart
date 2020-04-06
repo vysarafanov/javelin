@@ -1,8 +1,8 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/core.dart';
 import '../../gen.dart';
+import '../../law.dart';
 import '../../quick_check.dart';
-import '../laws/law.dart';
 
 class FunctorLaws {
   static Iterable<Law> laws<F>(
