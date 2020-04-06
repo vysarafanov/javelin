@@ -13,14 +13,14 @@ extension GetExt<A> on Gen<A> {
 
 class IntGen implements Gen<int> {
   final _random = Random();
-  final maxIntValue;
+  final max;
 
-  IntGen({this.maxIntValue = 100});
+  IntGen({this.max = 100});
 
   @override
   Iterable<int> random({int count = 100}) => Iterable.generate(
         count,
-        (_) => _random.nextInt(maxIntValue),
+        (_) => _random.nextInt(max),
       );
 }
 

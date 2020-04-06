@@ -1,25 +1,28 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:javelin/javelin_typeclass.dart';
 
-class IdType with IdShow, IdEq, IdApplicative, IdFunctor, IdMonad {
+class IdType
+    with
+        IdShow,
+        IdEq,
+        Invariant<ForId>,
+        Functor<ForId>,
+        IdApplicative,
+        IdMonad {
   const IdType();
 }
 
 /*
-* Function instance for Id datatype
-*/
-mixin IdFunctor on Applicative<ForId> implements Functor<ForId> {
-  @override
-  Kind<ForId, B> map<A, B>(Kind<ForId, A> fa, B Function(A a) f) =>
-      pure(f(fa.fix().value));
-}
-
-/*
 * Applicative instance for Id datatype
+* Implementation of Functor for Id data type
 */
 mixin IdApplicative implements Applicative<ForId> {
   @override
   Kind<ForId, A> pure<A>(A a) => Id(a);
+
+  @override
+  Kind<ForId, B> map<A, B>(Kind<ForId, A> fa, B Function(A a) f) =>
+      pure(f(fa.fix().value));
 }
 
 /*

@@ -2,14 +2,24 @@ import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/datatype/option.dart';
 
 class OptionType
-    with OptionShow, OptionEq, OptionApplicative, OptionFunctor, OptionMonad {
+    with
+        OptionShow,
+        OptionEq,
+        Invariant<ForOption>,
+        Functor<ForOption>,
+        OptionApplicative,
+        OptionMonad {
   const OptionType();
 }
 
 /*
-* Function instance for Option datatype
+* Applicative instance for Option datatype
+* Implementation of Functor for Option data type
 */
-mixin OptionFunctor on Applicative<ForOption> implements Functor<ForOption> {
+mixin OptionApplicative implements Applicative<ForOption> {
+  @override
+  Kind<ForOption, A> pure<A>(A a) => Option.of(a);
+
   @override
   Kind<ForOption, B> map<A, B>(
     Kind<ForOption, A> fa,
@@ -17,16 +27,8 @@ mixin OptionFunctor on Applicative<ForOption> implements Functor<ForOption> {
   ) =>
       fa.fix().fold(
             () => Option.none(),
-            (value) => pure(f(value)),
+            (a) => pure(f(a)),
           );
-}
-
-/*
-* Applicative instance for Option datatype
-*/
-mixin OptionApplicative implements Applicative<ForOption> {
-  @override
-  Kind<ForOption, A> pure<A>(A a) => Option.of(a);
 }
 
 /*
