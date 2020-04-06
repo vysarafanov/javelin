@@ -1,5 +1,5 @@
 part of javelin_typeclass;
 
 mixin Show<F> {
-  String show(covariant F fa);
+  String show<A>(covariant Kind<F, A> fa);
 }

@@ -9,10 +9,10 @@ class OptionType
 /*
 * Function instance for Option datatype
 */
-mixin OptionFunctor on Applicative<Option> implements Functor<Option> {
+mixin OptionFunctor on Applicative<ForOption> implements Functor<ForOption> {
   @override
-  Kind<Option, B> map<A, B>(
-    Kind<Option, A> fa,
+  Kind<ForOption, B> map<A, B>(
+    Kind<ForOption, A> fa,
     B f(A a),
   ) =>
       fa.fix().fold(
@@ -24,19 +24,19 @@ mixin OptionFunctor on Applicative<Option> implements Functor<Option> {
 /*
 * Applicative instance for Option datatype
 */
-mixin OptionApplicative implements Applicative<Option> {
+mixin OptionApplicative implements Applicative<ForOption> {
   @override
-  Kind<Option, A> pure<A>(A a) => Option.of(a);
+  Kind<ForOption, A> pure<A>(A a) => Option.of(a);
 }
 
 /*
 * Monad instance for Option datatype
 */
-mixin OptionMonad implements Monad<Option> {
+mixin OptionMonad implements Monad<ForOption> {
   @override
-  Kind<Option, B> flatMap<A, B>(
-    Kind<Option, A> fa,
-    Kind<Option, B> f(A a),
+  Kind<ForOption, B> flatMap<A, B>(
+    Kind<ForOption, A> fa,
+    Kind<ForOption, B> f(A a),
   ) =>
       fa.fix().fold(() => Option.none(), f);
 }
@@ -44,18 +44,18 @@ mixin OptionMonad implements Monad<Option> {
 /*
 * Show instance for Option datatype
 */
-mixin OptionShow implements Show<Option> {
+mixin OptionShow implements Show<ForOption> {
   @override
-  String show(Option fa) =>
+  String show<A>(Kind<ForOption, A> fa) =>
       fa.fix().fold(() => 'None()', (value) => 'Some($value)');
 }
 
 /*
 * Eq instance for Option datatype
 */
-mixin OptionEq implements Eq<Option> {
+mixin OptionEq implements Eq<ForOption> {
   @override
-  bool eqv(Option a, Option b) => a.fix().fold(
+  bool eqv<A>(Kind<ForOption, A> a, Kind<ForOption, A> b) => a.fix().fold(
       () => b.fix().fold(
             () => true,
             (_) => false,

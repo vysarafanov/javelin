@@ -1,7 +1,11 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/typeclass/instance/option.dart';
 
-abstract class Option<A> implements Kind<Option, A> {
+class ForOption {
+  ForOption._();
+}
+
+abstract class Option<A> implements Kind<ForOption, A> {
   B fold<B>(B ifNone(), B ifSome(A a));
 
   static Option<A> of<A>(A a) => a == null ? _None() : _Some(a);
@@ -13,11 +17,11 @@ abstract class Option<A> implements Kind<Option, A> {
   @override
   bool operator ==(other) => other is Option<A> ? eq.eqv(this, other) : false;
 
-  static const Functor<Option> functor = OptionType();
-  static const Applicative<Option> applicative = OptionType();
-  static const Monad<Option> monad = OptionType();
-  static const Show<Option> show = OptionType();
-  static const Eq<Option> eq = OptionType();
+  static const Functor<ForOption> functor = OptionType();
+  static const Applicative<ForOption> applicative = OptionType();
+  static const Monad<ForOption> monad = OptionType();
+  static const Show<ForOption> show = OptionType();
+  static const Eq<ForOption> eq = OptionType();
 }
 
 extension OptionExt<A> on Option<A> {
@@ -25,7 +29,7 @@ extension OptionExt<A> on Option<A> {
   Option<B> flatMap<B>(Option<B> f(A a)) => Option.monad.flatMap(this, f);
 }
 
-extension OptionK<A> on Kind<Option, A> {
+extension OptionK<A> on Kind<ForOption, A> {
   Option<A> fix() => this as Option<A>;
 }
 

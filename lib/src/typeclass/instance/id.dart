@@ -8,41 +8,42 @@ class IdType with IdShow, IdEq, IdApplicative, IdFunctor, IdMonad {
 /*
 * Function instance for Id datatype
 */
-mixin IdFunctor on Applicative<Id> implements Functor<Id> {
+mixin IdFunctor on Applicative<ForId> implements Functor<ForId> {
   @override
-  Kind<Id, B> map<A, B>(Kind<Id, A> fa, B Function(A a) f) =>
+  Kind<ForId, B> map<A, B>(Kind<ForId, A> fa, B Function(A a) f) =>
       pure(f(fa.fix().value));
 }
 
 /*
 * Applicative instance for Id datatype
 */
-mixin IdApplicative implements Applicative<Id> {
+mixin IdApplicative implements Applicative<ForId> {
   @override
-  Kind<Id, A> pure<A>(A a) => Id(a);
+  Kind<ForId, A> pure<A>(A a) => Id(a);
 }
 
 /*
 * Monad instance for Id datatype
 */
-mixin IdMonad implements Monad<Id> {
+mixin IdMonad implements Monad<ForId> {
   @override
-  Kind<Id, B> flatMap<A, B>(Kind<Id, A> fa, Kind<Id, B> f(A a)) =>
+  Kind<ForId, B> flatMap<A, B>(Kind<ForId, A> fa, Kind<ForId, B> f(A a)) =>
       f(fa.fix().value);
 }
 
 /*
 * Show instance for Id datatype
 */
-mixin IdShow implements Show<Id> {
+mixin IdShow implements Show<ForId> {
   @override
-  String show(Id fa) => 'Id(${fa.fix().value.toString()})';
+  String show<A>(Kind<ForId, A> fa) => 'Id(${fa.fix().value.toString()})';
 }
 
 /*
 * Eq instance for Id datatype
 */
-mixin IdEq implements Eq<Id> {
+mixin IdEq implements Eq<ForId> {
   @override
-  bool eqv(Id a, Id b) => a.fix().value == b.fix().value;
+  bool eqv<A>(Kind<ForId, A> a, Kind<ForId, A> b) =>
+      a.fix().value == b.fix().value;
 }

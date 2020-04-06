@@ -1,7 +1,11 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/typeclass/instance/id.dart';
 
-class Id<A> implements Kind<Id, A> {
+class ForId {
+  ForId._();
+}
+
+class Id<A> implements Kind<ForId, A> {
   final A value;
 
   Id(this.value);
@@ -12,11 +16,11 @@ class Id<A> implements Kind<Id, A> {
   @override
   bool operator ==(other) => other is Id<A> ? eq.eqv(this, other) : false;
 
-  static const Functor<Id> functor = IdType();
-  static const Applicative<Id> applicative = IdType();
-  static const Monad<Id> monad = IdType();
-  static const Show<Id> show = IdType();
-  static const Eq<Id> eq = IdType();
+  static const Functor<ForId> functor = IdType();
+  static const Applicative<ForId> applicative = IdType();
+  static const Monad<ForId> monad = IdType();
+  static const Show<ForId> show = IdType();
+  static const Eq<ForId> eq = IdType();
 }
 
 extension IdExt<A> on Id<A> {
@@ -24,6 +28,6 @@ extension IdExt<A> on Id<A> {
   Id<B> flatMap<B>(Id<B> f(A a)) => Id.monad.flatMap(this, f);
 }
 
-extension IdK<A> on Kind<Id, A> {
+extension IdK<A> on Kind<ForId, A> {
   Id<A> fix() => this as Id<A>;
 }
