@@ -6,6 +6,7 @@ import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../../law.dart';
 import '../laws/invariant_laws.dart';
+import '../laws/monad_laws.dart';
 import '../laws/show_laws.dart';
 
 Iterable<Law> optionLaws() sync* {
@@ -17,6 +18,7 @@ Iterable<Law> optionLaws() sync* {
   yield* FunctorLaws.laws(
       Option.functor, Option.eq<int>(), Option.applicative.pure);
   yield* ApplicativeLaws.laws(Option.applicative, Option.eq<int>());
+  yield* MonadLaws.laws(Option.monad, Option.eq<int>());
 }
 
 void main() {
