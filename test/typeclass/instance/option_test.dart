@@ -4,11 +4,15 @@ import 'package:test/test.dart';
 import '../laws/functor_laws.dart';
 
 void main() {
-  final fa = Id(5);
-  group(('IdFunctor'), () {
+  final fa = Option.of(5);
+  group(('OptionFunctor'), () {
     test('covariant identity', () {
       expect(
-        FunctorLaws.covariantIdentity(Id.functor, Id.eq, fa),
+        FunctorLaws.covariantIdentity(
+          Option.functor,
+          Option.eq,
+          fa,
+        ),
         true,
       );
     });
@@ -16,8 +20,8 @@ void main() {
     test('covariant composition', () {
       expect(
           FunctorLaws.covariantComposition(
-            Id.functor,
-            Id.eq,
+            Option.functor,
+            Option.eq,
             fa,
             (a) => a.toString(),
             (b) => int.parse(b),
