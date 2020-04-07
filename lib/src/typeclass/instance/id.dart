@@ -1,6 +1,8 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/datatype/id.dart';
 
+final idTypeInstance = IdType._();
+
 class IdType
     with
         Invariant<ForId>,
@@ -10,7 +12,7 @@ class IdType
         Monad<ForId>,
         IdApplicative,
         IdMonad {
-  const IdType();
+  const IdType._();
 }
 
 /*
@@ -38,18 +40,23 @@ mixin IdMonad implements Monad<ForId> {
 /*
 * Show instance for Id datatype
 */
-class IdShow<A> implements Show<Kind<ForId, A>> {
-  const IdShow();
+class IdShow<A> implements Show<Id<A>> {
+  final Show<A> SA;
+
+  const IdShow(this.SA);
 
   @override
-  String show(Kind<ForId, A> fa) => 'Id(${fa.fix().value.toString()})';
+  String show(Id<A> id) => 'Id(${SA.show(id.value)})';
 }
 
 /*
 * Eq instance for Id datatype
 */
-class IdEq<A> implements Eq<Kind<ForId, A>> {
+class IdEq<A> implements Eq<Id<A>> {
+  final Eq<A> EQ;
+
+  const IdEq(this.EQ);
+
   @override
-  bool eqv(Kind<ForId, A> a, Kind<ForId, A> b) =>
-      a.fix().value == b.fix().value;
+  bool eqv(Id<A> a, Id<A> b) => EQ.eqv(a.value, b.value);
 }

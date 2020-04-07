@@ -1,6 +1,8 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/typeclass/instance/option.dart';
 
+import '../typeclass/instance/option.dart';
+
 class ForOption {
   ForOption._();
 }
@@ -11,23 +13,19 @@ abstract class Option<A> implements Kind<ForOption, A> {
   static Option<A> of<A>(A a) => a == null ? _None() : _Some(a);
   static Option<A> none<A>() => _None();
 
-  @override
-  String toString() => show().show(this);
-
-  @override
-  bool operator ==(other) => other is Option<A> ? eq().eqv(this, other) : false;
-
-  static const Invariant<ForOption> invariant = OptionType();
-  static const Functor<ForOption> functor = OptionType();
-  static const Applicative<ForOption> applicative = OptionType();
-  static const Monad<ForOption> monad = OptionType();
-  static Show<Kind<ForOption, A>> show<A>() => OptionShow();
-  static Eq<Kind<ForOption, A>> eq<A>() => OptionEq();
+  static Invariant<ForOption> invariant() => optoinTypeInstance;
+  static Functor<ForOption> functor() => optoinTypeInstance;
+  static Applicative<ForOption> applicative() => optoinTypeInstance;
+  static Monad<ForOption> monad() => optoinTypeInstance;
+  static Show<Option<A>> show<A>(Show<A> SA) => OptionShow(SA);
+  static Eq<Option<A>> eq<A>(Eq<A> EQ) => OptionEq(EQ);
 }
 
 extension OptionExt<A> on Option<A> {
-  Option<B> map<B>(B f(A a)) => Option.functor.map(this, f);
-  Option<B> flatMap<B>(Option<B> f(A a)) => Option.monad.flatMap(this, f);
+  Option<B> map<B>(B f(A a)) => Option.functor().map(this, f);
+  Option<B> flatMap<B>(Option<B> f(A a)) => Option.monad().flatMap(this, f);
+  String show(Show<A> SA) => Option.show(SA).show(this);
+  bool eq(Eq<A> EQ, Option<A> other) => Option.eq(EQ).eqv(this, other);
 }
 
 extension OptionK<A> on Kind<ForOption, A> {

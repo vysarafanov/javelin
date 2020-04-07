@@ -7,28 +7,28 @@ import '../../law.dart';
 
 class InvariantLaws {
   static Iterable<Law> laws<F>(
-    Invariant<F> INV,
+    Invariant<F> IF,
     Eq<Kind<F, int>> EQ,
     Kind<F, int> f(int a),
   ) sync* {
-    yield Law('Invariant Laws: Invariant Identity', () => identity(INV, EQ, f));
+    yield Law('Invariant Laws: Invariant Identity', () => identity(IF, EQ, f));
     yield Law(
-        'Invariant Laws: Invariant Composition', () => composition(INV, EQ, f));
+        'Invariant Laws: Invariant Composition', () => composition(IF, EQ, f));
   }
 
   static void identity<F>(
-    Invariant<F> INV,
+    Invariant<F> IF,
     Eq<Kind<F, int>> EQ,
     Kind<F, int> f(int a),
   ) =>
       check(forall(
           IntGen().map(f),
-          (Kind<F, int> fa) => INV
+          (Kind<F, int> fa) => IF
               .imap<int, int>(fa, core.identity, core.identity)
               .equalUnderTheLaw(EQ, fa)));
 
   static void composition<F>(
-    Invariant<F> INV,
+    Invariant<F> IF,
     Eq<Kind<F, int>> EQ,
     Kind<F, int> f(int a),
   ) =>
@@ -45,9 +45,9 @@ class InvariantLaws {
             int Function(int) g1,
             int Function(int) g2,
           ) =>
-              INV.imap<int, int>(INV.imap(fa, f1, f2), g1, g2).equalUnderTheLaw(
+              IF.imap<int, int>(IF.imap(fa, f1, f2), g1, g2).equalUnderTheLaw(
                     EQ,
-                    INV.imap<int, int>(
+                    IF.imap<int, int>(
                         fa, g1.compose<int>(f1), g2.compose<int>(f2)),
                   )));
 }

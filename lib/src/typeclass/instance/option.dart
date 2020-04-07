@@ -1,6 +1,8 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/datatype/option.dart';
 
+final optoinTypeInstance = OptionType._();
+
 class OptionType
     with
         Invariant<ForOption>,
@@ -10,7 +12,7 @@ class OptionType
         Monad<ForOption>,
         OptionApplicative,
         OptionMonad {
-  const OptionType();
+  const OptionType._();
 }
 
 /*
@@ -47,28 +49,30 @@ mixin OptionMonad implements Monad<ForOption> {
 /*
 * Show instance for Option datatype
 */
-class OptionShow<A> implements Show<Kind<ForOption, A>> {
-  const OptionShow();
+class OptionShow<A> implements Show<Option<A>> {
+  final Show<A> SA;
+  const OptionShow(this.SA);
 
   @override
-  String show(Kind<ForOption, A> fa) =>
-      fa.fix().fold(() => 'None()', (value) => 'Some($value)');
+  String show(Option<A> fa) =>
+      fa.fold(() => 'None()', (value) => 'Some(${SA.show(value)})');
 }
 
 /*
 * Eq instance for Option datatype
 */
-class OptionEq<A> implements Eq<Kind<ForOption, A>> {
-  const OptionEq();
+class OptionEq<A> implements Eq<Option<A>> {
+  final Eq<A> EQ;
+  const OptionEq(this.EQ);
 
   @override
-  bool eqv(Kind<ForOption, A> a, Kind<ForOption, A> b) => a.fix().fold(
-      () => b.fix().fold(
+  bool eqv(Option<A> fa, Option<A> fb) => fa.fold(
+      () => fb.fold(
             () => true,
             (_) => false,
           ),
-      (value) => b.fix().fold(
+      (a) => fb.fold(
             () => false,
-            (value) => value == value,
+            (b) => EQ.eqv(a, b),
           ));
 }
