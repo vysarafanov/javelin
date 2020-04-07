@@ -4,7 +4,7 @@ mixin Functor<F> on Invariant<F> {
   ///Transform the [F] wrapped value [A] into [B] preserving the [F] structure
   /// `Kind<F, A> -> Kind<F, B>`
   ///
-  Kind<F, B> map<A, B>(covariant Kind<F, A> fa, B f(A a));
+  Kind<F, B> map<A, B>(Kind<F, A> fa, B f(A a));
 
   @override
   Kind<F, B> imap<A, B>(Kind<F, A> fa, B f(A a), A g(B b)) => map(fa, f);

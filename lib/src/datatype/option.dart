@@ -1,8 +1,6 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/typeclass/instance/option.dart';
 
-import '../typeclass/instance/option.dart';
-
 class ForOption {
   ForOption._();
 }

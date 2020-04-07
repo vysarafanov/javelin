@@ -9,35 +9,12 @@ class OptionType
         Functor<ForOption>,
         Apply<ForOption>,
         Applicative<ForOption>,
-        Monad<ForOption>,
-        OptionApplicative,
-        OptionMonad {
+        Monad<ForOption> {
   const OptionType._();
-}
 
-/*
-* Applicative instance for Option datatype
-* Implementation of Functor for Option data type
-*/
-mixin OptionApplicative implements Applicative<ForOption> {
   @override
   Kind<ForOption, A> pure<A>(A a) => Option.of(a);
 
-  @override
-  Kind<ForOption, B> map<A, B>(
-    Kind<ForOption, A> fa,
-    B f(A a),
-  ) =>
-      fa.fix().fold(
-            () => Option.none(),
-            (a) => pure(f(a)),
-          );
-}
-
-/*
-* Monad instance for Option datatype
-*/
-mixin OptionMonad implements Monad<ForOption> {
   @override
   Kind<ForOption, B> flatMap<A, B>(
     Kind<ForOption, A> fa,
