@@ -1,7 +1,7 @@
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/datatype/option.dart';
 
-final optoinTypeInstance = OptionType._();
+final optionTypeInstance = OptionType._();
 
 class OptionType
     with

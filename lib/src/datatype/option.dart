@@ -11,10 +11,10 @@ abstract class Option<A> implements Kind<ForOption, A> {
   static Option<A> of<A>(A a) => a == null ? _None() : _Some(a);
   static Option<A> none<A>() => _None();
 
-  static Invariant<ForOption> invariant() => optoinTypeInstance;
-  static Functor<ForOption> functor() => optoinTypeInstance;
-  static Applicative<ForOption> applicative() => optoinTypeInstance;
-  static Monad<ForOption> monad() => optoinTypeInstance;
+  static Invariant<ForOption> invariant() => optionTypeInstance;
+  static Functor<ForOption> functor() => optionTypeInstance;
+  static Applicative<ForOption> applicative() => optionTypeInstance;
+  static Monad<ForOption> monad() => optionTypeInstance;
   // static ApplicativeError<ForOption, dynamic> applicativeError() =>
   //     optoinTypeInstance;
   static Show<Option<A>> show<A>(Show<A> SA) => OptionShow(SA);

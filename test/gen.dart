@@ -1,14 +1,16 @@
 import 'dart:math';
 
 abstract class Gen<T> {
-  /// Generate a random sequence of type T, that is compatible
-  /// with the constraints of this generator.
-  ///
-  Iterable<T> random({int count = 100});
+  T random();
 }
 
-extension GetExt<A> on Gen<A> {
+extension GenExt<A> on Gen<A> {
   Gen<B> map<B>(B f(A a)) => MappedGen<A, B>(this, f);
+  Iterable<A> generate(int count) sync* {
+    for (var i = 0; i < count; i++) {
+      yield random();
+    }
+  }
 }
 
 class IntGen implements Gen<int> {
@@ -18,10 +20,7 @@ class IntGen implements Gen<int> {
   IntGen({this.max = 100});
 
   @override
-  Iterable<int> random({int count = 100}) => Iterable.generate(
-        count,
-        (_) => _random.nextInt(max),
-      );
+  int random() => _random.nextInt(max);
 }
 
 class MappedGen<S, T> implements Gen<T> {
@@ -31,7 +30,7 @@ class MappedGen<S, T> implements Gen<T> {
   MappedGen(this._gen, this._f);
 
   @override
-  Iterable<T> random({int count = 100}) => _gen.random(count: count).map(_f);
+  T random() => _f(_gen.random());
 }
 
 class FunctionAtoB {

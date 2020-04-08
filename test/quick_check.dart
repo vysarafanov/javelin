@@ -17,17 +17,17 @@ Property forall<A>(
   bool property(A a), {
   int iterations = 100,
 }) =>
-    Property(() => aGen.random(count: iterations).every(property));
+    Property(() => aGen.generate(iterations).every(property));
 
 Property forall2<A, B>(
   Gen<A> aGen,
   Gen<B> bGen,
   bool property(A a, B b), {
-  int iterations = 1,
+  int iterations = 100,
 }) =>
     Property(() => zip2(
-          aGen.random(count: iterations).toList(),
-          bGen.random(count: iterations).toList(),
+          aGen.generate(iterations).toList(),
+          bGen.generate(iterations).toList(),
           iterations,
         ).every((tuple) => property(tuple.a, tuple.b)));
 
@@ -36,12 +36,12 @@ Property forall3<A, B, C>(
   Gen<B> bGen,
   Gen<C> cGen,
   bool property(A a, B b, C c), {
-  int iterations = 1,
+  int iterations = 100,
 }) =>
     Property(() => zip3(
-          aGen.random(count: iterations).toList(),
-          bGen.random(count: iterations).toList(),
-          cGen.random(count: iterations).toList(),
+          aGen.generate(iterations).toList(),
+          bGen.generate(iterations).toList(),
+          cGen.generate(iterations).toList(),
           iterations,
         ).every((tuple) => property(tuple.a, tuple.b, tuple.c)));
 
@@ -51,13 +51,13 @@ Property forall4<A, B, C, D>(
   Gen<C> cGen,
   Gen<D> dGen,
   bool property(A a, B b, C c, D d), {
-  int iterations = 1,
+  int iterations = 100,
 }) =>
     Property(() => zip4(
-          aGen.random(count: iterations).toList(),
-          bGen.random(count: iterations).toList(),
-          cGen.random(count: iterations).toList(),
-          dGen.random(count: iterations).toList(),
+          aGen.generate(iterations).toList(),
+          bGen.generate(iterations).toList(),
+          cGen.generate(iterations).toList(),
+          dGen.generate(iterations).toList(),
           iterations,
         ).every((tuple) => property(tuple.a, tuple.b, tuple.c, tuple.d)));
 
@@ -68,14 +68,14 @@ Property forall5<A, B, C, D, E>(
   Gen<D> dGen,
   Gen<E> eGen,
   bool property(A a, B b, C c, D d, E e), {
-  int iterations = 1,
+  int iterations = 100,
 }) =>
     Property(() => zip5(
-          aGen.random(count: iterations).toList(),
-          bGen.random(count: iterations).toList(),
-          cGen.random(count: iterations).toList(),
-          dGen.random(count: iterations).toList(),
-          eGen.random(count: iterations).toList(),
+          aGen.generate(iterations).toList(),
+          bGen.generate(iterations).toList(),
+          cGen.generate(iterations).toList(),
+          dGen.generate(iterations).toList(),
+          eGen.generate(iterations).toList(),
           iterations,
         ).every(
             (tuple) => property(tuple.a, tuple.b, tuple.c, tuple.d, tuple.e)));
