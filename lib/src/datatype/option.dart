@@ -15,6 +15,8 @@ abstract class Option<A> implements Kind<ForOption, A> {
   static Functor<ForOption> functor() => optoinTypeInstance;
   static Applicative<ForOption> applicative() => optoinTypeInstance;
   static Monad<ForOption> monad() => optoinTypeInstance;
+  // static ApplicativeError<ForOption, dynamic> applicativeError() =>
+  //     optoinTypeInstance;
   static Show<Option<A>> show<A>(Show<A> SA) => OptionShow(SA);
   static Eq<Option<A>> eq<A>(Eq<A> EQ) => OptionEq(EQ);
 }
@@ -24,6 +26,8 @@ extension OptionExt<A> on Option<A> {
   Option<B> flatMap<B>(Option<B> f(A a)) => Option.monad().flatMap(this, f);
   String show(Show<A> SA) => Option.show(SA).show(this);
   bool eq(Eq<A> EQ, Option<A> other) => Option.eq(EQ).eqv(this, other);
+  bool isEmpty() => fold(() => true, (_) => false);
+  Option<A> orElse(Option<A> alternative()) => isEmpty() ? alternative() : this;
 }
 
 extension OptionK<A> on Kind<ForOption, A> {

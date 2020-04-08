@@ -3,6 +3,7 @@ library javelin_typeclass;
 import 'package:javelin/src/datatype/tuple.dart';
 
 part 'src/hks.dart';
+part 'src/typeclass/applicative_error.dart';
 part 'src/typeclass/applicative.dart';
 part 'src/typeclass/apply.dart';
 part 'src/typeclass/eq.dart';

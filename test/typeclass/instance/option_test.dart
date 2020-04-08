@@ -2,6 +2,7 @@ import 'package:javelin/javelin_datatype.dart';
 import 'package:javelin/javelin_extension.dart';
 import 'package:test/test.dart';
 
+import '../laws/applicative_error_laws.dart';
 import '../laws/applicative_laws.dart';
 import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
@@ -34,6 +35,10 @@ Iterable<Law> optionLaws() sync* {
     Option.applicative(),
     Option.eq<int>(IntJ.eq()),
   );
+  // yield* ApplicativeErrorLaws.laws(
+  //   Option.applicativeError(),
+  //   Option.eq(IntJ.eq()),
+  // );
   yield* MonadLaws.laws(
     Option.monad(),
     Option.eq<int>(IntJ.eq()),

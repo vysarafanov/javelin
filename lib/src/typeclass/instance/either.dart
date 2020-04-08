@@ -1,7 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:javelin/javelin_typeclass.dart';
 
-final eitherTypeInstance = EitherType<dynamic>();
+final eitherTypeInstance = EitherType<Object>();
 
 class EitherType<L>
     with
@@ -9,10 +9,23 @@ class EitherType<L>
         Functor<Kind<ForEither, L>>,
         Apply<Kind<ForEither, L>>,
         Applicative<Kind<ForEither, L>>,
+        ApplicativeError<Kind<ForEither, L>, L>,
         Monad<Kind<ForEither, L>> {
+  ///Applicative
   @override
   Kind<Kind<ForEither, L>, A> pure<A>(A r) => Either.right(r);
 
+  ///ApplicativeError
+  @override
+  Kind<Kind<ForEither, L>, A> raiseError<A>(L e) => Either.left(e);
+  @override
+  Kind<Kind<ForEither, L>, A> handleErrorWith<A>(
+    Kind<Kind<ForEither, L>, A> fa,
+    Kind<Kind<ForEither, L>, A> f(L e),
+  ) =>
+      fa.fix().fold(f, (r) => fa);
+
+  ///Monad
   @override
   Kind<Kind<ForEither, L>, B> flatMap<A, B>(
     Kind<Kind<ForEither, L>, A> fa,

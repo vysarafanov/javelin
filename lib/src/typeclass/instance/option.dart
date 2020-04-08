@@ -9,12 +9,24 @@ class OptionType
         Functor<ForOption>,
         Apply<ForOption>,
         Applicative<ForOption>,
+        // ApplicativeError<ForOption, void>,
         Monad<ForOption> {
   const OptionType._();
 
+  ///Applicative
   @override
   Kind<ForOption, A> pure<A>(A a) => Option.of(a);
 
+  // ///ApplicativeError
+  // @override
+  // Kind<ForOption, A> raiseError<A>([_]) => Option.none();
+
+  // @override
+  // Kind<ForOption, A> handleErrorWith<A>(
+  //         Kind<ForOption, A> fa, Kind<ForOption, A> f([_])) =>
+  //     fa.fix().orElse(() => f().fix());
+
+  ///Monad
   @override
   Kind<ForOption, B> flatMap<A, B>(
     Kind<ForOption, A> fa,

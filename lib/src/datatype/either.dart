@@ -14,6 +14,8 @@ abstract class Either<L, R> implements Kind<Kind<ForEither, L>, R> {
   static Invariant<Kind<ForEither, L>> invariant<L>() => EitherType<L>();
   static Functor<Kind<ForEither, L>> functor<L>() => EitherType<L>();
   static Applicative<Kind<ForEither, L>> applicative<L>() => EitherType<L>();
+  static ApplicativeError<Kind<ForEither, L>, L> applicativeError<L>() =>
+      EitherType<L>();
   static Monad<Kind<ForEither, L>> monad<L>() => EitherType<L>();
 
   static Show<Either<L, R>> show<L, R>(Show<L> SL, Show<R> SR) =>

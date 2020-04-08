@@ -3,6 +3,7 @@ import 'package:javelin/javelin_extension.dart';
 import 'package:test/test.dart';
 
 import '../../law.dart';
+import '../laws/applicative_error_laws.dart';
 import '../laws/applicative_laws.dart';
 import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
@@ -34,6 +35,8 @@ Iterable<Law> eitherLaws() sync* {
     Either.applicative<String>(),
     Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
   );
+  yield* ApplicativeErrorLaws.laws(
+      Either.applicativeError<int>(), Either.eq(IntJ.eq(), IntJ.eq()));
   yield* MonadLaws.laws(
     Either.monad<String>(),
     Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
