@@ -1,7 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:javelin/javelin_typeclass.dart';
 
-final eitherTypeInstance = EitherType<Object>();
+//final eitherTypeInstance = EitherType<Object>();
 
 class EitherType<L>
     with
@@ -13,11 +13,11 @@ class EitherType<L>
         Monad<Kind<ForEither, L>> {
   ///Applicative
   @override
-  Kind<Kind<ForEither, L>, A> pure<A>(A r) => Either.right(r);
+  Kind<Kind<ForEither, L>, A> pure<A>(A r) => Either.right<L, A>(r);
 
   ///ApplicativeError
   @override
-  Kind<Kind<ForEither, L>, A> raiseError<A>(L e) => Either.left(e);
+  Kind<Kind<ForEither, L>, A> raiseError<A>(L e) => Either.left<L, A>(e);
   @override
   Kind<Kind<ForEither, L>, A> handleErrorWith<A>(
     Kind<Kind<ForEither, L>, A> fa,

@@ -15,23 +15,23 @@ class ApplicativeLaws {
 
   static void apIdentity<F>(Applicative<F> AP, Eq<Kind<F, int>> EQ) =>
       check(forall(
-        IntGen().map(AP.pure),
+        Gen.integer().ap(AP),
         (Kind<F, int> fa) =>
             AP.ap<int, int>(fa, AP.pure(identity)).equalUnderTheLaw(EQ, fa),
       ));
 
   static void homomorphism<F>(Applicative<F> AP, Eq<Kind<F, int>> EQ) =>
       check(forall2(
-        FunctionAtoB.gen(IntGen()),
-        IntGen(),
+        Gen.functionAtoB(Gen.integer()),
+        Gen.integer(),
         (int Function(int) f, int a) =>
             AP.ap(AP.pure(a), AP.pure(f)).equalUnderTheLaw(EQ, AP.pure(f(a))),
       ));
 
   static void interchange<F>(Applicative<F> AP, Eq<Kind<F, int>> EQ) => check(
         forall2(
-            FunctionAtoB.gen(IntGen()).map(AP.pure),
-            IntGen(),
+            Gen.functionAtoB(Gen.integer()).ap(AP),
+            Gen.integer(),
             (Kind<F, int Function(int)> fa, int a) =>
                 AP.ap(AP.pure(a), fa).equalUnderTheLaw(
                       EQ,
@@ -41,8 +41,8 @@ class ApplicativeLaws {
 
   static void mapDerived<F>(Applicative<F> AP, Eq<Kind<F, int>> EQ) =>
       check(forall2(
-          IntGen().map(AP.pure),
-          FunctionAtoB.gen(IntGen()),
+          Gen.integer().ap(AP),
+          Gen.functionAtoB(Gen.integer()),
           (Kind<F, int> fa, int Function(int) f) =>
               AP.map(fa, f).equalUnderTheLaw(EQ, AP.ap(fa, AP.pure(f)))));
 }

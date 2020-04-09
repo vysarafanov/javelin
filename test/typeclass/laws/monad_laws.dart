@@ -12,22 +12,22 @@ class MonadLaws {
   }
 
   static void leftIdentity<F>(Monad<F> M, Eq<Kind<F, int>> EQ) => check(forall2(
-      FunctionAtoB.gen<int, Kind<F, int>>(IntGen().map(M.pure)),
-      IntGen(),
+      Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().ap(M)),
+      Gen.integer(),
       (Kind<F, int> Function(int) f, int a) =>
           M.flatMap(M.pure(a), f).equalUnderTheLaw(EQ, f(a))));
 
   static void rightIdentity<F>(Monad<F> M, Eq<Kind<F, int>> EQ) => check(forall(
-        IntGen().map(M.pure),
+        Gen.integer().ap(M),
         (Kind<F, int> fa) =>
             M.flatMap<int, int>(fa, M.pure).equalUnderTheLaw(EQ, fa),
       ));
 
   static void associativity<F>(Monad<F> M, Eq<Kind<F, int>> EQ) =>
       check(forall3(
-          FunctionAtoB.gen<int, Kind<F, int>>(IntGen().map(M.pure)),
-          FunctionAtoB.gen<int, Kind<F, int>>(IntGen().map(M.pure)),
-          IntGen(),
+          Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().ap(M)),
+          Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().ap(M)),
+          Gen.integer(),
           (
             Kind<F, int> Function(int) f,
             Kind<F, int> Function(int) g,

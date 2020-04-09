@@ -27,7 +27,7 @@ class FunctorLaws {
   ) =>
       check(
         forall(
-          IntGen().map(f),
+          Gen.integer().map(f),
           (Kind<F, int> fa) =>
               FF.map<int, int>(fa, identity).equalUnderTheLaw(EQ, fa),
         ),
@@ -40,9 +40,9 @@ class FunctorLaws {
   ) =>
       check(
         forall3(
-          IntGen().map(f),
-          FunctionAtoB.gen<int, int>(IntGen()),
-          FunctionAtoB.gen<int, int>(IntGen()),
+          Gen.integer().map(f),
+          Gen.functionAtoB<int, int>(Gen.integer()),
+          Gen.functionAtoB<int, int>(Gen.integer()),
           (Kind<F, int> fa, int Function(int) f, int Function(int) g) => FF
               .map<int, int>(FF.map<int, int>(fa, f), g)
               .equalUnderTheLaw(EQ, FF.map(fa, f.andThen(g))),

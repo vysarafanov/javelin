@@ -12,7 +12,7 @@ class EqLaws {
   }
 
   static void reflexivityEquality<F>(Eq<F> EQ, F f(int c)) => check(forall(
-        IntGen(),
+        Gen.integer(),
         (value) {
           final a = f(value);
           return EQ.eqv(a, a);
@@ -20,7 +20,7 @@ class EqLaws {
       ));
 
   static void commutativeEquality<F>(Eq<F> EQ, F f(int c)) => check(forall(
-        IntGen(),
+        Gen.integer(),
         (value) {
           final a = f(value);
           final b = f(value);
@@ -29,7 +29,7 @@ class EqLaws {
       ));
 
   static void transitiveEquality<F>(Eq<F> EQ, F f(int c)) => check(forall(
-        IntGen(),
+        Gen.integer(),
         (value) {
           final a = f(value);
           final b = f(value);

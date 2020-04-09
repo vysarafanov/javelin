@@ -36,9 +36,9 @@ Iterable<Law> eitherLaws() sync* {
     Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
   );
   yield* ApplicativeErrorLaws.laws(
-      Either.applicativeError<int>(),
-      Either.eq(IntJ.eq(), IntJ.eq()),
-      Either.eq(IntJ.eq(), Either.eq(IntJ.eq(), IntJ.eq())));
+      Either.applicativeError<Exception>(),
+      Either.eq(ExceptionJ.eq(), IntJ.eq()),
+      Either.eq(ExceptionJ.eq(), Either.eq(ExceptionJ.eq(), IntJ.eq())));
   yield* MonadLaws.laws(
     Either.monad<String>(),
     Either.eq<String, int>(StringJ.eq(), IntJ.eq()),

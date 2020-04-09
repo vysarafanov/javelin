@@ -22,7 +22,7 @@ class InvariantLaws {
     Kind<F, int> f(int a),
   ) =>
       check(forall(
-          IntGen().map(f),
+          Gen.integer().map(f),
           (Kind<F, int> fa) => IF
               .imap<int, int>(fa, core.identity, core.identity)
               .equalUnderTheLaw(EQ, fa)));
@@ -33,11 +33,11 @@ class InvariantLaws {
     Kind<F, int> f(int a),
   ) =>
       check(forall5(
-          IntGen().map(f),
-          FunctionAtoB.gen<int, int>(IntGen()),
-          FunctionAtoB.gen<int, int>(IntGen()),
-          FunctionAtoB.gen<int, int>(IntGen()),
-          FunctionAtoB.gen<int, int>(IntGen()),
+          Gen.integer().map(f),
+          Gen.functionAtoB<int, int>(Gen.integer()),
+          Gen.functionAtoB<int, int>(Gen.integer()),
+          Gen.functionAtoB<int, int>(Gen.integer()),
+          Gen.functionAtoB<int, int>(Gen.integer()),
           (
             Kind<F, int> fa,
             int Function(int) f1,

@@ -1,6 +1,9 @@
 part of javelin_extension;
 
-class ExceptoinJ {}
+class ExceptionJ {
+  static Eq<Exception> eq() => exceptionTypeInstance;
+  static Show<Exception> show() => exceptionTypeInstance;
+}
 
 final exceptionTypeInstance = _ExceptionType._();
 

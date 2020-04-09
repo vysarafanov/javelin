@@ -18,7 +18,7 @@ class ShowLaws {
     F f(int c),
   ) =>
       check(
-        forall(IntGen(), (value) {
+        forall(Gen.integer(), (value) {
           final a = f(value);
           final b = f(value);
           return EQ.eqv(a, b) && S.show(a) == S.show(b);
