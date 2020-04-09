@@ -7,6 +7,7 @@ class EitherType<L>
     with
         Invariant<Kind<ForEither, L>>,
         Functor<Kind<ForEither, L>>,
+        Bifunctor<ForEither>,
         Apply<Kind<ForEither, L>>,
         Applicative<Kind<ForEither, L>>,
         ApplicativeError<Kind<ForEither, L>, L>,
@@ -14,6 +15,14 @@ class EitherType<L>
   ///Applicative
   @override
   Kind<Kind<ForEither, L>, A> pure<A>(A r) => Either.right<L, A>(r);
+
+  ///Bifunctor
+  ///
+  @override
+  Kind<Kind<ForEither, C>, D> bimap<A, B, C, D>(
+          Kind<Kind<ForEither, A>, B> fa, C fl(A a), D fr(B b)) =>
+      fa.fix().fold((A l) => Either.left<C, D>(fl(l)),
+          (B r) => Either.right<C, D>(fr(r)));
 
   ///ApplicativeError
   @override

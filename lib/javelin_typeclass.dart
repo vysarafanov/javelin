@@ -7,6 +7,7 @@ part 'src/hks.dart';
 part 'src/typeclass/applicative_error.dart';
 part 'src/typeclass/applicative.dart';
 part 'src/typeclass/apply.dart';
+part 'src/typeclass/bifunctor.dart';
 part 'src/typeclass/eq.dart';
 part 'src/typeclass/functor.dart';
 part 'src/typeclass/invariant.dart';

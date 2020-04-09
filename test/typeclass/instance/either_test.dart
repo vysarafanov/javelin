@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 import '../../law.dart';
 import '../laws/applicative_error_laws.dart';
 import '../laws/applicative_laws.dart';
+import '../laws/bifunctor_laws.dart';
 import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../laws/invariant_laws.dart';
@@ -29,6 +30,11 @@ Iterable<Law> eitherLaws() sync* {
     Either.functor<String>(),
     Either.eq<String, int>(),
     Either.applicative<String>().pure,
+  );
+  yield* BifunctorLaws.laws(
+    Either.bifunctor(),
+    (int i) => Either.right<int, int>(i),
+    Either.eq<int, int>(),
   );
   yield* ApplicativeLaws.laws(
     Either.applicative<String>(),
