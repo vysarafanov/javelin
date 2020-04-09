@@ -13,27 +13,27 @@ import '../laws/show_laws.dart';
 
 Iterable<Law> optionLaws() sync* {
   yield* ShowLaws.laws(
-    Option.show(IntJ.show()),
-    Option.eq<int>(IntJ.eq()),
+    Option.show(),
+    Option.eq<int>(),
     Option.applicative().pure,
   );
   yield* EqLaws.laws(
-    Option.eq<int>(IntJ.eq()),
+    Option.eq<int>(),
     Option.applicative().pure,
   );
   yield* InvariantLaws.laws(
     Option.invariant(),
-    Option.eq<int>(IntJ.eq()),
+    Option.eq<int>(),
     Option.applicative().pure,
   );
   yield* FunctorLaws.laws(
     Option.functor(),
-    Option.eq<int>(IntJ.eq()),
+    Option.eq<int>(),
     Option.applicative().pure,
   );
   yield* ApplicativeLaws.laws(
     Option.applicative(),
-    Option.eq<int>(IntJ.eq()),
+    Option.eq<int>(),
   );
   // yield* ApplicativeErrorLaws.laws(
   //   Option.applicativeError(),
@@ -41,7 +41,7 @@ Iterable<Law> optionLaws() sync* {
   // );
   yield* MonadLaws.laws(
     Option.monad(),
-    Option.eq<int>(IntJ.eq()),
+    Option.eq<int>(),
   );
 }
 

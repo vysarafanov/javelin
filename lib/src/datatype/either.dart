@@ -18,9 +18,8 @@ abstract class Either<L, R> implements Kind<Kind<ForEither, L>, R> {
       EitherType<L>();
   static Monad<Kind<ForEither, L>> monad<L>() => EitherType<L>();
 
-  static Show<Either<L, R>> show<L, R>(Show<L> SL, Show<R> SR) =>
-      EitherShow(SL, SR);
-  static Eq<Either<L, R>> eq<L, R>(Eq<L> EQL, Eq<R> EQR) => EitherEq(EQL, EQR);
+  static Show<Either<L, R>> show<L, R>() => EitherShow();
+  static Eq<Either<L, R>> eq<L, R>() => EitherEq();
 }
 
 extension EitherK<L, R> on Kind<Kind<ForEither, L>, R> {
@@ -34,6 +33,13 @@ class _Left<L, R> extends Either<L, R> {
 
   @override
   B fold<B>(B ifLeft(L l), B ifRight(R r)) => ifLeft(_l);
+
+  @override
+  String toString() => 'Left($_l)';
+  @override
+  bool operator ==(other) => other is _Left<L, R> && other._l == _l;
+  @override
+  int get hashCode => _l.hashCode;
 }
 
 class _Right<L, R> extends Either<L, R> {
@@ -43,4 +49,11 @@ class _Right<L, R> extends Either<L, R> {
 
   @override
   B fold<B>(B ifLeft(L l), B ifRight(R r)) => ifRight(_r);
+
+  @override
+  String toString() => 'Right($_r)';
+  @override
+  bool operator ==(other) => other is _Right<L, R> && other._r == _r;
+  @override
+  int get hashCode => _r.hashCode;
 }

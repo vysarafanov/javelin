@@ -17,15 +17,15 @@ abstract class Option<A> implements Kind<ForOption, A> {
   static Monad<ForOption> monad() => optionTypeInstance;
   // static ApplicativeError<ForOption, dynamic> applicativeError() =>
   //     optoinTypeInstance;
-  static Show<Option<A>> show<A>(Show<A> SA) => OptionShow(SA);
-  static Eq<Option<A>> eq<A>(Eq<A> EQ) => OptionEq(EQ);
+  static Show<Option<A>> show<A>() => OptionShow();
+  static Eq<Option<A>> eq<A>() => OptionEq();
 }
 
 extension OptionExt<A> on Option<A> {
   Option<B> map<B>(B f(A a)) => Option.functor().map(this, f);
   Option<B> flatMap<B>(Option<B> f(A a)) => Option.monad().flatMap(this, f);
-  String show(Show<A> SA) => Option.show(SA).show(this);
-  bool eq(Eq<A> EQ, Option<A> other) => Option.eq(EQ).eqv(this, other);
+  String show() => Option.show().show(this);
+  bool eq(Option<A> other) => Option.eq().eqv(this, other);
   bool isEmpty() => fold(() => true, (_) => false);
   Option<A> orElse(Option<A> alternative()) => isEmpty() ? alternative() : this;
 }
@@ -43,6 +43,10 @@ class _Some<A> extends Option<A> {
   B fold<B>(B ifNone(), B ifSome(A a)) => ifSome(_a);
 
   @override
+  String toString() => 'Some($_a)';
+  @override
+  bool operator ==(other) => other is _Some<A> && other._a == _a;
+  @override
   int get hashCode => _a.hashCode;
 }
 
@@ -50,6 +54,10 @@ class _None<A> extends Option<A> {
   @override
   B fold<B>(B ifNone(), B ifSome(A a)) => ifNone();
 
+  @override
+  String toString() => 'None()';
+  @override
+  bool operator ==(other) => other is _None;
   @override
   int get hashCode => 0;
 }

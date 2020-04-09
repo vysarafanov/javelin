@@ -24,22 +24,18 @@ class IdType
 * Show instance for Id datatype
 */
 class IdShow<A> implements Show<Id<A>> {
-  final Show<A> SA;
-
-  const IdShow(this.SA);
+  const IdShow();
 
   @override
-  String show(Id<A> id) => 'Id(${SA.show(id.value)})';
+  String show(Id<A> id) => id.toString();
 }
 
 /*
 * Eq instance for Id datatype
 */
 class IdEq<A> implements Eq<Id<A>> {
-  final Eq<A> EQ;
-
-  const IdEq(this.EQ);
+  const IdEq();
 
   @override
-  bool eqv(Id<A> a, Id<A> b) => EQ.eqv(a.value, b.value);
+  bool eqv(Id<A> a, Id<A> b) => a == b;
 }

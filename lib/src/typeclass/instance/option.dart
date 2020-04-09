@@ -39,29 +39,18 @@ class OptionType
 * Show instance for Option datatype
 */
 class OptionShow<A> implements Show<Option<A>> {
-  final Show<A> SA;
-  const OptionShow(this.SA);
+  const OptionShow();
 
   @override
-  String show(Option<A> fa) =>
-      fa.fold(() => 'None()', (value) => 'Some(${SA.show(value)})');
+  String show(Option<A> fa) => fa.toString();
 }
 
 /*
 * Eq instance for Option datatype
 */
 class OptionEq<A> implements Eq<Option<A>> {
-  final Eq<A> EQ;
-  const OptionEq(this.EQ);
+  const OptionEq();
 
   @override
-  bool eqv(Option<A> fa, Option<A> fb) => fa.fold(
-      () => fb.fold(
-            () => true,
-            (_) => false,
-          ),
-      (a) => fb.fold(
-            () => false,
-            (b) => EQ.eqv(a, b),
-          ));
+  bool eqv(Option<A> fa, Option<A> fb) => fa == fb;
 }

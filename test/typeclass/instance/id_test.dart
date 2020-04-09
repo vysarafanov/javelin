@@ -12,31 +12,31 @@ import '../../law.dart';
 
 Iterable<Law> idLaws() sync* {
   yield* ShowLaws.laws(
-    Id.show(IntJ.show()),
-    Id.eq<int>(IntJ.eq()),
+    Id.show(),
+    Id.eq<int>(),
     Id.applicative().pure,
   );
   yield* EqLaws.laws(
-    Id.eq<int>(IntJ.eq()),
+    Id.eq<int>(),
     Id.applicative().pure,
   );
   yield* InvariantLaws.laws(
     Id.invariant(),
-    Id.eq<int>(IntJ.eq()),
+    Id.eq<int>(),
     Id.applicative().pure,
   );
   yield* FunctorLaws.laws(
     Id.functor(),
-    Id.eq<int>(IntJ.eq()),
+    Id.eq<int>(),
     Id.applicative().pure,
   );
   yield* ApplicativeLaws.laws(
     Id.applicative(),
-    Id.eq<int>(IntJ.eq()),
+    Id.eq<int>(),
   );
   yield* MonadLaws.laws(
     Id.monad(),
-    Id.eq<int>(IntJ.eq()),
+    Id.eq<int>(),
   );
 }
 

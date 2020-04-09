@@ -45,9 +45,10 @@ class ApplicativeErrorLaws {
   static void applicativeErrorHandleWith<F>(
           ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
       check(forall2(
-          Gen.functionAtoB<Exception, Kind<F, int>>(Gen.integer().apError(AE)),
+          Gen.functionAtoB<Exception, Kind<F, int>>(
+              Gen.integer().apError<F>(AE)),
           Gen.exception(),
-          (Kind<F, int> Function(Exception) f, Exception e) => AE
+          (Kind<F, int> Function(Exception e) f, Exception e) => AE
               .handleErrorWith<int>(AE.raiseError(e), f)
               .equalUnderTheLaw(EQ, f(e))));
 
@@ -56,8 +57,8 @@ class ApplicativeErrorLaws {
       check(forall2(
           Gen.functionAtoB<Exception, Kind<F, int>>(Gen.integer().apError(AE)),
           Gen.integer(),
-          (Kind<F, int> Function(Exception) f, int a) => AE
-              .handleErrorWith(AE.pure(a), (f))
+          (Kind<F, int> Function(Exception e) f, int a) => AE
+              .handleErrorWith(AE.pure(a), f)
               .equalUnderTheLaw(EQ, AE.pure(a))));
 
   static void redeemIsDerivedFromMapHandleError<F>(

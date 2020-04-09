@@ -1,5 +1,4 @@
 import 'package:javelin/javelin_datatype.dart';
-import 'package:javelin/javelin_extension.dart';
 import 'package:test/test.dart';
 
 import '../../law.dart';
@@ -13,35 +12,35 @@ import '../laws/show_laws.dart';
 
 Iterable<Law> eitherLaws() sync* {
   yield* ShowLaws.laws(
-    Either.show(StringJ.show(), IntJ.show()),
-    Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
+    Either.show(),
+    Either.eq<String, int>(),
     Either.applicative<String>().pure,
   );
   yield* EqLaws.laws(
-    Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
+    Either.eq<String, int>(),
     Either.applicative<String>().pure,
   );
   yield* InvariantLaws.laws(
     Either.invariant<String>(),
-    Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
+    Either.eq<String, int>(),
     Either.applicative<String>().pure,
   );
   yield* FunctorLaws.laws(
     Either.functor<String>(),
-    Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
+    Either.eq<String, int>(),
     Either.applicative<String>().pure,
   );
   yield* ApplicativeLaws.laws(
     Either.applicative<String>(),
-    Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
+    Either.eq<String, int>(),
   );
   yield* ApplicativeErrorLaws.laws(
       Either.applicativeError<Exception>(),
-      Either.eq(ExceptionJ.eq(), IntJ.eq()),
-      Either.eq(ExceptionJ.eq(), Either.eq(ExceptionJ.eq(), IntJ.eq())));
+      Either.eq<Exception, int>(),
+      Either.eq<Exception, Either<Exception, int>>());
   yield* MonadLaws.laws(
     Either.monad<String>(),
-    Either.eq<String, int>(StringJ.eq(), IntJ.eq()),
+    Either.eq<String, int>(),
   );
 }
 

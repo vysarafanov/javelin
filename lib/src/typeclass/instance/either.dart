@@ -38,43 +38,26 @@ extension EitherExt<L, A> on Either<L, A> {
   Either<L, B> map<B>(B f(A a)) => Either.functor<L>().map(this, f);
   Either<L, B> flatMap<B>(Either<L, B> f(A a)) =>
       Either.monad<L>().flatMap(this, f);
-  String show(Show<L> SL, Show<A> SA) => Either.show(SL, SA).show(this);
-  bool eq(Eq<L> EQL, Eq<A> EQA, Either<L, A> other) =>
-      Either.eq(EQL, EQA).eqv(this, other);
+  String show() => Either.show().show(this);
+  bool eq(Either<L, A> other) => Either.eq().eqv(this, other);
 }
 
 /*
 * Show instance for Either datatype
 */
 class EitherShow<L, R> implements Show<Either<L, R>> {
-  final Show<L> SL;
-  final Show<R> SR;
-  const EitherShow(this.SL, this.SR);
+  const EitherShow();
 
   @override
-  String show(Either<L, R> fa) => fa.fold(
-        (l) => 'Left(${SL.show(l)})',
-        (value) => 'Right(${SR.show(value)})',
-      );
+  String show(Either<L, R> fa) => fa.toString();
 }
 
 /*
 * Eq instance for Either datatype
 */
 class EitherEq<L, R> implements Eq<Either<L, R>> {
-  final Eq<L> EQL;
-  final Eq<R> EQR;
-
-  const EitherEq(this.EQL, this.EQR);
+  const EitherEq();
 
   @override
-  bool eqv(Either<L, R> fa, Either<L, R> fb) => fa.fold(
-      (la) => fb.fold(
-            (lb) => EQL.eqv(la, lb),
-            (_) => false,
-          ),
-      (ra) => fb.fold(
-            (_) => false,
-            (rb) => EQR.eqv(ra, rb),
-          ));
+  bool eqv(Either<L, R> fa, Either<L, R> fb) => fa == fb;
 }
