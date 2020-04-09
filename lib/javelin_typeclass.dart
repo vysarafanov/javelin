@@ -1,5 +1,6 @@
 library javelin_typeclass;
 
+import 'package:javelin/src/core.dart';
 import 'package:javelin/src/datatype/either.dart';
 import 'package:javelin/src/datatype/tuple.dart';
 
