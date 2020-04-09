@@ -1,5 +1,6 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:javelin/javelin_typeclass.dart';
+import 'package:javelin/src/core.dart';
 
 import '../../gen.dart';
 import '../../quick_check.dart';
@@ -23,6 +24,13 @@ class ApplicativeErrorLaws {
         () => applicativeErrorAttemptError(AE, EQ_EITHER));
     yield Law('Applicative Error Laws: attempt for success',
         () => applicativeErrorAttemptSuccess(AE, EQ_EITHER));
+    yield Law(
+        'Applicative Error Laws: attempt lift from Either consistent with pure',
+        () =>
+            applicativeErrorAttemptFromEitherConsistentWithPure(AE, EQ_EITHER));
+
+    yield Law('Applicative Error Laws: catch captures errors',
+        () => applicativeErrorCatch(AE, EQ));
   }
 
   static void applicativeErrorHandle<F>(
@@ -80,17 +88,28 @@ class ApplicativeErrorLaws {
             (a) => AE.attempt(AE.pure<int>(a)).equalUnderTheLaw(
                 EQ, AE.pure(Either.right<Exception, int>(a)))),
       );
+
+  static void applicativeErrorAttemptFromEitherConsistentWithPure<F>(
+          ApplicativeError<F, Exception> AE,
+          Eq<Kind<F, Either<Exception, int>>> EQ) =>
+      check(forall(
+          Gen.either<Exception, int>(Gen.exception(), Gen.integer()),
+          (Either<Exception, int> either) => AE
+              .attempt(AE.fromEither(either, identity))
+              .equalUnderTheLaw(EQ, AE.pure(either))));
+
+  static void applicativeErrorCatch<F>(
+          ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
+      check(forall(
+          Gen.either(Gen.exception(), Gen.integer()),
+          (Either<Exception, int> either) => AE
+              .tryCatch(
+                  () => either.fold((l) {
+                        throw l;
+                      }, identity),
+                  identity)
+              .equalUnderTheLaw(EQ, either.fold(AE.raiseError, AE.pure))));
   /*
-
-  fun <F> ApplicativeError<F, Throwable>.applicativeErrorAttemptFromEitherConsistentWithPure(EQ: Eq<Kind<F, Either<Throwable, Int>>>): Unit =
-    forAll(Gen.either(Gen.throwable(), Gen.int())) { either: Either<Throwable, Int> ->
-      either.fromEither { it }.attempt().equalUnderTheLaw(just(either), EQ)
-    }
-
-  fun <F> ApplicativeError<F, Throwable>.applicativeErrorCatch(EQ: Eq<Kind<F, Int>>): Unit =
-    forAll(Gen.either(Gen.throwable(), Gen.int())) { either: Either<Throwable, Int> ->
-      catch { either.fold({ throw it }, ::identity) }.equalUnderTheLaw(either.fold({ raiseError<Int>(it) }, { just(it) }), EQ)
-    }
 
   fun <F> ApplicativeError<F, Throwable>.applicativeErrorEffectCatch(EQ: Eq<Kind<F, Int>>): Unit =
     forAll(Gen.either(Gen.throwable(), Gen.int())) { either: Either<Throwable, Int> ->

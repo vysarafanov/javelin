@@ -24,4 +24,7 @@ mixin ApplicativeError<F, E> on Applicative<F> {
       return raiseError(recover(e));
     }
   }
+
+  Kind<F, A> fromEither<A, EE>(Either<EE, A> either, E f(EE e)) =>
+      either.fold((l) => raiseError(f(l)), pure);
 }
