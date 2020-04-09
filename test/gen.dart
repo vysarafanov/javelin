@@ -12,6 +12,7 @@ abstract class Gen<T> {
   static Gen<B Function(A)> functionAtoB<A, B>(Gen<B> genB) =>
       _MappedGen(genB, (b) => (_) => b);
   static Gen<Exception> exception() => _ExceptionGen();
+  static Gen<bool> boolean() => _BoolGen();
 
   static Gen<A> oneOf<A>(Iterable<Gen<A>> gens) => _OneOfGen(gens);
 
@@ -87,4 +88,12 @@ class _MappedGen<S, T> implements Gen<T> {
 
   @override
   T random() => _f(_gen.random());
+}
+
+class _BoolGen implements Gen<bool> {
+  final _random = Random();
+  _BoolGen();
+
+  @override
+  bool random() => _random.nextBool();
 }

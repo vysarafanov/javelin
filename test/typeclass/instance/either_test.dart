@@ -8,6 +8,7 @@ import '../laws/bifunctor_laws.dart';
 import '../laws/eq_laws.dart';
 import '../laws/functor_laws.dart';
 import '../laws/invariant_laws.dart';
+import '../laws/monad_error_laws.dart';
 import '../laws/monad_laws.dart';
 import '../laws/show_laws.dart';
 
@@ -41,12 +42,17 @@ Iterable<Law> eitherLaws() sync* {
     Either.eq<String, int>(),
   );
   yield* ApplicativeErrorLaws.laws(
-      Either.applicativeError<Exception>(),
-      Either.eq<Exception, int>(),
-      Either.eq<Exception, Either<Exception, int>>());
+    Either.applicativeError<Exception>(),
+    Either.eq<Exception, int>(),
+    Either.eq<Exception, Either<Exception, int>>(),
+  );
   yield* MonadLaws.laws(
     Either.monad<String>(),
     Either.eq<String, int>(),
+  );
+  yield* MonadErrorLaws.laws(
+    Either.monadError<Exception>(),
+    Either.eq<Exception, int>(),
   );
 }
 

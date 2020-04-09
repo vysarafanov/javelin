@@ -11,7 +11,8 @@ class EitherType<L>
         Apply<Kind<ForEither, L>>,
         Applicative<Kind<ForEither, L>>,
         ApplicativeError<Kind<ForEither, L>, L>,
-        Monad<Kind<ForEither, L>> {
+        Monad<Kind<ForEither, L>>,
+        MonadError<Kind<ForEither, L>, L> {
   ///Applicative
   @override
   Kind<Kind<ForEither, L>, A> pure<A>(A r) => Either.right<L, A>(r);
