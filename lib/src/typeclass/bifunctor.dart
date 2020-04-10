@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Bifunctor<F> {
   Kind<Kind<F, C>, D> bimap<A, B, C, D>(

@@ -1,5 +1,4 @@
-import 'package:javelin/javelin_datatype.dart';
-import 'package:javelin/javelin_extension.dart';
+import 'package:javelin/datatype.dart';
 import 'package:javelin/src/typeclass/instance/option.dart';
 import 'package:test/test.dart';
 

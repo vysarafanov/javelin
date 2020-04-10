@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin ApplicativeError<F, E> on Applicative<F> {
   Kind<F, A> raiseError<A>(E e);

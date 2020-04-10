@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Functor<F> on Invariant<F> {
   ///Transform the [F] wrapped value [A] into [B] preserving the [F] structure

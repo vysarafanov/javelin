@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Semigroup<A> {
   A combine(A a, A b);

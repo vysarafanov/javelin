@@ -1,5 +1,5 @@
-import 'package:javelin/javelin_datatype.dart';
-import 'package:javelin/javelin_extension.dart';
+import 'package:javelin/datatype.dart';
+import 'package:javelin/extension.dart';
 import 'package:test/test.dart';
 
 import '../laws/applicative_laws.dart';

@@ -1,4 +1,4 @@
-part of javelin_extension;
+part of extension;
 
 class StringJ {
   static Eq<String> eq() => stringTypeInstance;

@@ -1,4 +1,4 @@
-import 'package:javelin/javelin_extension.dart';
+import 'package:javelin/extension.dart';
 import 'package:javelin/src/core.dart';
 import 'package:test/test.dart';
 

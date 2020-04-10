@@ -1,3 +1,3 @@
-part of javelin_typeclass;
+part of typeclass;
 
 abstract class Kind<F, A> {}

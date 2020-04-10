@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:javelin/javelin_typeclass.dart';
+import 'package:javelin/typeclass.dart';
 import 'package:javelin/src/datatype/either.dart';
 import 'package:javelin/src/typeclass/instance/option.dart';
 

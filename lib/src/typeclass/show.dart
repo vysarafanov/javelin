@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Show<F> {
   String show(covariant F fa);

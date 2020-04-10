@@ -1,4 +1,4 @@
-library javelin_datatype;
+library datatype;
 
 export 'package:javelin/src/datatype/either.dart';
 export 'package:javelin/src/datatype/id.dart';

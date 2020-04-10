@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Monoid<A> on Semigroup<A> {
   A empty();

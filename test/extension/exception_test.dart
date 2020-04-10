@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:javelin/javelin_extension.dart';
+import 'package:javelin/extension.dart';
 import 'package:test/test.dart';
 
 import '../law.dart';

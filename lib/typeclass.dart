@@ -1,4 +1,4 @@
-library javelin_typeclass;
+library typeclass;
 
 import 'package:javelin/src/core.dart';
 import 'package:javelin/src/datatype/either.dart';

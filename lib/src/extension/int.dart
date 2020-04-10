@@ -1,4 +1,4 @@
-part of javelin_extension;
+part of extension;
 
 class IntJ {
   static Eq<int> eq() => intTypeInstance;

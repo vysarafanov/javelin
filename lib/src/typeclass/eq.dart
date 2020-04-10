@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Eq<F> {
   bool eqv(covariant F a, covariant F b);

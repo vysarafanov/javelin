@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Apply<F> on Functor<F> {
   ///Given both the value and the function are within [F], **ap**ply the function to the value.

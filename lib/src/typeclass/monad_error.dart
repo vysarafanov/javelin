@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin MonadError<F, E> on ApplicativeError<F, E>, Monad<F> {
   Kind<F, A> ensure<A>(Kind<F, A> fa, E error(), bool predicate(A a)) =>

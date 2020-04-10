@@ -1,4 +1,4 @@
-import 'package:javelin/javelin_typeclass.dart';
+import 'package:javelin/typeclass.dart';
 import 'package:javelin/src/datatype/id.dart';
 
 final idTypeInstance = IdType._();

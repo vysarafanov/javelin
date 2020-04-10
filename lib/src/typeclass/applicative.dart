@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Applicative<F> on Apply<F> {
   Kind<F, A> pure<A>(A a);

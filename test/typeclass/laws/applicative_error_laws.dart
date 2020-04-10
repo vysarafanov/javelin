@@ -1,5 +1,5 @@
-import 'package:javelin/javelin_datatype.dart';
-import 'package:javelin/javelin_typeclass.dart';
+import 'package:javelin/datatype.dart';
+import 'package:javelin/typeclass.dart';
 import 'package:javelin/src/core.dart';
 
 import '../../gen.dart';

@@ -1,4 +1,4 @@
-part of javelin_typeclass;
+part of typeclass;
 
 mixin Monad<F> on Applicative<F> {
   Kind<F, B> flatMap<A, B>(Kind<F, A> fa, Kind<F, B> f(A a));
