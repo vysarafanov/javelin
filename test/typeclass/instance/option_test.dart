@@ -44,13 +44,14 @@ Iterable<Law> optionLaws() sync* {
     Option.eq<Either<Unit, int>>(),
     Gen.unit(),
   );
-  // yield* MonadErrorLaws.laws(
-  //   Option.monadError(),
-  //   Option.eq<int>(),
-  // );
   yield* MonadLaws.laws(
     Option.monad(),
     Option.eq<int>(),
+  );
+  yield* MonadErrorLaws.laws(
+    Option.monadError(),
+    Option.eq<int>(),
+    Gen.unit(),
   );
 }
 

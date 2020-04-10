@@ -1,42 +1,41 @@
 import 'package:javelin/javelin_typeclass.dart';
-import 'package:javelin/src/core.dart';
 
 import '../../gen.dart';
 import '../../law.dart';
 import '../../quick_check.dart';
 
 class MonadErrorLaws {
-  static Iterable<Law> laws<F>(
-      MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) sync* {
-    yield Law('Monad Error Laws: left zero', () => monadErrorLeftZero(ME, EQ));
+  static Iterable<Law> laws<F, E>(
+      MonadError<F, E> ME, Eq<Kind<F, int>> EQ, Gen<E> eGen) sync* {
+    yield Law(
+        'Monad Error Laws: left zero', () => monadErrorLeftZero(ME, EQ, eGen));
     yield Law('Monad Error Laws: ensure consistency',
-        () => monadErrorEnsureConsistency(ME, EQ));
+        () => monadErrorEnsureConsistency(ME, EQ, eGen));
     yield Law('Monad Error Laws: NonFatal is caught',
-        () => monadErrorCatchesNonFatalExceptions(ME, EQ));
+        () => monadErrorCatchesNonFatalExceptions(ME, EQ, eGen));
     yield Law(
         'Monad Error Laws: redeemWith is derived from flatMap & HandleErrorWith',
-        () => monadErrorDerivesRedeemWith(ME, EQ));
+        () => monadErrorDerivesRedeemWith(ME, EQ, eGen));
     yield Law('Monad Error Laws: redeemWith pure is flatMap',
-        () => monadErrorRedeemWithPureIsFlatMap(ME, EQ));
+        () => monadErrorRedeemWithPureIsFlatMap(ME, EQ, eGen));
   }
 
-  static void monadErrorLeftZero<F>(
-          MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
+  static void monadErrorLeftZero<F, E>(
+          MonadError<F, E> ME, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall2(
-          Gen.functionAtoB<int, Kind<F, int>>(
-              Gen.integer().apError(ME, Gen.exception())),
-          Gen.exception(),
-          (Kind<F, int> f(int i), Exception e) => ME
+          Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().apError(ME, eGen)),
+          eGen,
+          (Kind<F, int> f(int i), E e) => ME
               .flatMap(ME.raiseError<int>(e), f)
               .equalUnderTheLaw(EQ, ME.raiseError<int>(e))));
 
-  static void monadErrorEnsureConsistency<F>(
-          MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
+  static void monadErrorEnsureConsistency<F, E>(
+          MonadError<F, E> ME, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall3(
-        Gen.integer().apError(ME, Gen.exception()),
-        Gen.exception(),
+        Gen.integer().apError(ME, eGen),
+        eGen,
         Gen.functionAtoB<int, bool>(Gen.boolean()),
-        (Kind<F, int> fa, Exception e, bool p(int i)) => ME
+        (Kind<F, int> fa, E e, bool p(int i)) => ME
             .ensure(fa, () => e, p)
             .equalUnderTheLaw(
                 EQ,
@@ -44,52 +43,39 @@ class MonadErrorLaws {
                     (int a) => p(a) ? ME.pure<int>(a) : ME.raiseError<int>(e))),
       ));
 
-  static void monadErrorCatchesNonFatalExceptions<F>(
-          MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
-      check(forall(
+  static void monadErrorCatchesNonFatalExceptions<F, E>(
+          MonadError<F, E> ME, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
+      check(forall2(
           Gen.exception(),
-          (Exception nonFatal) => ME
+          eGen,
+          (Exception nonFatal, E e) => ME
               .tryCatch<int>(
                 () => throw nonFatal,
-                identity,
+                (exception) => e,
               )
-              .equalUnderTheLaw(EQ, ME.raiseError<int>(nonFatal))));
+              .equalUnderTheLaw(EQ, ME.raiseError<int>(e))));
 
-  static void monadErrorDerivesRedeemWith<F>(
-          MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
+  static void monadErrorDerivesRedeemWith<F, E>(
+          MonadError<F, E> ME, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall3(
-          Gen.integer().apError(ME, Gen.exception()),
-          Gen.functionAtoB<Exception, Kind<F, int>>(
-              Gen.integer().apError(ME, Gen.exception())),
-          Gen.functionAtoB<int, Kind<F, int>>(
-              Gen.integer().apError(ME, Gen.exception())),
+          Gen.integer().apError(ME, eGen),
+          Gen.functionAtoB<E, Kind<F, int>>(Gen.integer().apError(ME, eGen)),
+          Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().apError(ME, eGen)),
           (
             Kind<F, int> fa,
-            Kind<F, int> fe(Exception e),
+            Kind<F, int> fe(E e),
             Kind<F, int> fb(int a),
           ) =>
               ME.redeemWith(fa, fe, fb).equalUnderTheLaw(
                   EQ, ME.handleErrorWith(ME.flatMap(fa, fb), fe))));
 
-  static void monadErrorRedeemWithPureIsFlatMap<F>(
-          MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
+  static void monadErrorRedeemWithPureIsFlatMap<F, E>(
+          MonadError<F, E> ME, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall3(
           Gen.integer().ap(ME),
-          Gen.functionAtoB<Exception, Kind<F, int>>(
-              Gen.integer().apError(ME, Gen.exception())),
+          Gen.functionAtoB<E, Kind<F, int>>(Gen.integer().apError(ME, eGen)),
           Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().ap(ME)),
-          (Kind<F, int> fa, Kind<F, int> fe(Exception e),
-                  Kind<F, int> fb(int a)) =>
-              ME
-                  .redeemWith(fa, fe, fb)
-                  .equalUnderTheLaw(EQ, ME.flatMap(fa, fb))));
-  /*
-
-  fun <F> MonadError<F, Throwable>.monadErrorRedeemWithPureIsFlatMap(EQ: Eq<Kind<F, Int>>) =
-    forAll(Gen.int().applicative(this),
-      Gen.functionAToB<Throwable, Kind<F, Int>>(Gen.int().applicativeError(this)),
-      Gen.functionAToB<Int, Kind<F, Int>>(Gen.int().applicative(this))) { fa, fe, fb ->
-      fa.redeemWith(fe, fb).equalUnderTheLaw(fa.flatMap(fb), EQ)
-    }
-    */
+          (Kind<F, int> fa, Kind<F, int> fe(E e), Kind<F, int> fb(int a)) => ME
+              .redeemWith(fa, fe, fb)
+              .equalUnderTheLaw(EQ, ME.flatMap(fa, fb))));
 }

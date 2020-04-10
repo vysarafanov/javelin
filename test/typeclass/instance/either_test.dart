@@ -55,6 +55,7 @@ Iterable<Law> eitherLaws() sync* {
   yield* MonadErrorLaws.laws(
     Either.monadError<Exception>(),
     Either.eq<Exception, int>(),
+    Gen.exception(),
   );
 }
 
