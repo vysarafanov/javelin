@@ -1,5 +1,4 @@
-import 'package:javelin/src/typeclass.dart';
-import 'package:javelin/src/typeclass/instance/id.dart';
+part of datatype_core;
 
 class ForId {
   ForId._();

@@ -1,13 +1,13 @@
-import 'package:javelin/src/datatype.dart';
+import 'package:javelin/src/datatype/datatype_core.dart';
 import 'package:test/test.dart';
 
-import '../laws/applicative_laws.dart';
-import '../laws/eq_laws.dart';
-import '../laws/functor_laws.dart';
-import '../laws/invariant_laws.dart';
-import '../laws/monad_laws.dart';
-import '../laws/show_laws.dart';
 import '../../law.dart';
+import '../../typeclass/laws/applicative_laws.dart';
+import '../../typeclass/laws/eq_laws.dart';
+import '../../typeclass/laws/functor_laws.dart';
+import '../../typeclass/laws/invariant_laws.dart';
+import '../../typeclass/laws/monad_laws.dart';
+import '../../typeclass/laws/show_laws.dart';
 
 Iterable<Law> idLaws() sync* {
   yield* ShowLaws.laws(

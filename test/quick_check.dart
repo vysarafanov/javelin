@@ -1,4 +1,4 @@
-import 'package:javelin/src/datatype.dart';
+import 'package:javelin/src/datatype/datatype_core.dart';
 import 'package:test/test.dart';
 
 import 'gen.dart';

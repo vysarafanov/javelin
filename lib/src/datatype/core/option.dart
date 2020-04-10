@@ -1,5 +1,4 @@
-import 'package:javelin/src/typeclass.dart';
-import 'package:javelin/src/typeclass/instance/option.dart';
+part of datatype_core;
 
 class ForOption {
   ForOption._();
@@ -59,6 +58,18 @@ class _None<A> extends Option<A> {
   String toString() => 'None()';
   @override
   bool operator ==(other) => other is _None;
+  @override
+  int get hashCode => 0;
+}
+
+///Option ApplicativeError implementstion `error type`
+class Unit {
+  const Unit();
+
+  @override
+  String toString() => 'Unit';
+  @override
+  bool operator ==(other) => other is Unit;
   @override
   int get hashCode => 0;
 }

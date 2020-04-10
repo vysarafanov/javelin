@@ -1,8 +1,7 @@
 library typeclass;
 
 import 'package:javelin/src/core.dart';
-import 'package:javelin/src/datatype/either.dart';
-import 'package:javelin/src/datatype/tuple.dart';
+import 'package:javelin/src/datatype/datatype_core.dart';
 
 part 'hks.dart';
 part 'typeclass/applicative_error.dart';
