@@ -7,109 +7,112 @@ import '../../quick_check.dart';
 import '../../law.dart';
 
 class ApplicativeErrorLaws {
-  static Iterable<Law> laws<F>(
-      ApplicativeError<F, Exception> AE,
+  static Iterable<Law> laws<F, E>(
+      ApplicativeError<F, E> AE,
       Eq<Kind<F, int>> EQ,
-      Eq<Kind<F, Either<Exception, int>>> EQ_EITHER) sync* {
-    yield Law(
-        'Applicative Error Laws: handle', () => applicativeErrorHandle(AE, EQ));
+      Eq<Kind<F, Either<E, int>>> EQ_EITHER,
+      Gen<E> eGen) sync* {
+    yield Law('Applicative Error Laws: handle',
+        () => applicativeErrorHandle(AE, EQ, eGen));
     yield Law('Applicative Error Laws: handle with for error',
-        () => applicativeErrorHandleWith(AE, EQ));
+        () => applicativeErrorHandleWith(AE, EQ, eGen));
     yield Law('Applicative Error Laws: handle with for success',
-        () => applicativeErrorHandleWithPure(AE, EQ));
+        () => applicativeErrorHandleWithPure(AE, EQ, eGen));
     yield Law(
         'Applicative Error Laws: redeem is derived from map and handleError',
-        () => redeemIsDerivedFromMapHandleError(AE, EQ));
+        () => redeemIsDerivedFromMapHandleError(AE, EQ, eGen));
     yield Law('Applicative Error Laws: attempt for error',
-        () => applicativeErrorAttemptError(AE, EQ_EITHER));
+        () => applicativeErrorAttemptError(AE, EQ_EITHER, eGen));
     yield Law('Applicative Error Laws: attempt for success',
         () => applicativeErrorAttemptSuccess(AE, EQ_EITHER));
     yield Law(
         'Applicative Error Laws: attempt lift from Either consistent with pure',
-        () =>
-            applicativeErrorAttemptFromEitherConsistentWithPure(AE, EQ_EITHER));
+        () => applicativeErrorAttemptFromEitherConsistentWithPure(
+            AE, EQ_EITHER, eGen));
 
     yield Law('Applicative Error Laws: catch captures errors',
-        () => applicativeErrorCatch(AE, EQ));
+        () => applicativeErrorCatch(AE, EQ, eGen));
   }
 
-  static void applicativeErrorHandle<F>(
-          ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
+  static void applicativeErrorHandle<F, E>(
+          ApplicativeError<F, E> AE, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall2(
-          Gen.functionAtoB<Exception, int>(Gen.integer()),
-          Gen.exception(),
-          (int Function(Exception e) f, Exception e) => AE
+          Gen.functionAtoB<E, int>(Gen.integer()),
+          eGen,
+          (int Function(E e) f, E e) => AE
               .handleError<int>(AE.raiseError(e), f)
               .equalUnderTheLaw(EQ, AE.pure(f(e)))));
 
-  static void applicativeErrorHandleWith<F>(
-          ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
+  static void applicativeErrorHandleWith<F, E>(
+          ApplicativeError<F, E> AE, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall2(
-          Gen.functionAtoB<Exception, Kind<F, int>>(
-              Gen.integer().apError<F>(AE)),
-          Gen.exception(),
-          (Kind<F, int> Function(Exception e) f, Exception e) => AE
+          Gen.functionAtoB<E, Kind<F, int>>(
+              Gen.integer().apError<F, E>(AE, eGen)),
+          eGen,
+          (Kind<F, int> Function(E e) f, E e) => AE
               .handleErrorWith<int>(AE.raiseError(e), f)
               .equalUnderTheLaw(EQ, f(e))));
 
-  static void applicativeErrorHandleWithPure<F>(
-          ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
+  static void applicativeErrorHandleWithPure<F, E>(
+          ApplicativeError<F, E> AE, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall2(
-          Gen.functionAtoB<Exception, Kind<F, int>>(Gen.integer().apError(AE)),
+          Gen.functionAtoB<E, Kind<F, int>>(Gen.integer().apError(AE, eGen)),
           Gen.integer(),
-          (Kind<F, int> Function(Exception e) f, int a) => AE
+          (Kind<F, int> Function(E e) f, int a) => AE
               .handleErrorWith(AE.pure(a), f)
               .equalUnderTheLaw(EQ, AE.pure(a))));
 
-  static void redeemIsDerivedFromMapHandleError<F>(
-          ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
+  static void redeemIsDerivedFromMapHandleError<F, E>(
+          ApplicativeError<F, E> AE, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
       check(forall3(
-          Gen.integer().apError(AE),
-          Gen.functionAtoB<Exception, int>(Gen.integer()),
+          Gen.integer().apError(AE, eGen),
+          Gen.functionAtoB<E, int>(Gen.integer()),
           Gen.functionAtoB<int, int>(Gen.integer()),
-          (Kind<F, int> fa, int Function(Exception) fe, int Function(int) fb) =>
-              AE
-                  .redeem(fa, fe, fb)
-                  .equalUnderTheLaw(EQ, AE.handleError(AE.map(fa, fb), fe))));
+          (Kind<F, int> fa, int Function(E) fe, int Function(int) fb) => AE
+              .redeem(fa, fe, fb)
+              .equalUnderTheLaw(EQ, AE.handleError(AE.map(fa, fb), fe))));
 
-  static void applicativeErrorAttemptError<F>(ApplicativeError<F, Exception> AE,
-          Eq<Kind<F, Either<Exception, int>>> EQ) =>
+  static void applicativeErrorAttemptError<F, E>(ApplicativeError<F, E> AE,
+          Eq<Kind<F, Either<E, int>>> EQ, Gen<E> eGen) =>
       check(forall(
-          Gen.exception(),
-          (Exception e) => AE
+          eGen,
+          (E e) => AE
               .attempt(AE.raiseError<int>(e))
-              .equalUnderTheLaw(EQ, AE.pure(Either.left<Exception, int>(e)))));
+              .equalUnderTheLaw(EQ, AE.pure(Either.left<E, int>(e)))));
 
-  static void applicativeErrorAttemptSuccess<F>(
-          ApplicativeError<F, Exception> AE,
-          Eq<Kind<F, Either<Exception, int>>> EQ) =>
+  static void applicativeErrorAttemptSuccess<F, E>(
+          ApplicativeError<F, E> AE, Eq<Kind<F, Either<E, int>>> EQ) =>
       check(
         forall(
             Gen.integer(),
-            (a) => AE.attempt(AE.pure<int>(a)).equalUnderTheLaw(
-                EQ, AE.pure(Either.right<Exception, int>(a)))),
+            (a) => AE
+                .attempt(AE.pure<int>(a))
+                .equalUnderTheLaw(EQ, AE.pure(Either.right<E, int>(a)))),
       );
 
-  static void applicativeErrorAttemptFromEitherConsistentWithPure<F>(
-          ApplicativeError<F, Exception> AE,
-          Eq<Kind<F, Either<Exception, int>>> EQ) =>
+  static void applicativeErrorAttemptFromEitherConsistentWithPure<F, E>(
+          ApplicativeError<F, E> AE,
+          Eq<Kind<F, Either<E, int>>> EQ,
+          Gen<E> eGen) =>
       check(forall(
-          Gen.either<Exception, int>(Gen.exception(), Gen.integer()),
-          (Either<Exception, int> either) => AE
+          Gen.either<E, int>(eGen, Gen.integer()),
+          (Either<E, int> either) => AE
               .attempt(AE.fromEither(either, identity))
               .equalUnderTheLaw(EQ, AE.pure(either))));
 
-  static void applicativeErrorCatch<F>(
-          ApplicativeError<F, Exception> AE, Eq<Kind<F, int>> EQ) =>
-      check(forall(
+  static void applicativeErrorCatch<F, E>(
+          ApplicativeError<F, E> AE, Eq<Kind<F, int>> EQ, Gen<E> eGen) =>
+      check(forall2(
           Gen.either(Gen.exception(), Gen.integer()),
-          (Either<Exception, int> either) => AE
+          eGen,
+          (Either<Exception, int> either, E e) => AE
               .tryCatch(
                   () => either.fold((l) {
                         throw l;
                       }, identity),
-                  identity)
-              .equalUnderTheLaw(EQ, either.fold(AE.raiseError, AE.pure))));
+                  (exception) => e)
+              .equalUnderTheLaw(
+                  EQ, either.fold((_) => AE.raiseError(e), AE.pure))));
   /*
 
   fun <F> ApplicativeError<F, Throwable>.applicativeErrorEffectCatch(EQ: Eq<Kind<F, Int>>): Unit =

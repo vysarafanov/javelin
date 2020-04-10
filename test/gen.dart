@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:javelin/javelin_typeclass.dart';
 import 'package:javelin/src/datatype/either.dart';
+import 'package:javelin/src/typeclass/instance/option.dart';
 
 abstract class Gen<T> {
   T random();
@@ -13,6 +14,7 @@ abstract class Gen<T> {
       _MappedGen(genB, (b) => (_) => b);
   static Gen<Exception> exception() => _ExceptionGen();
   static Gen<bool> boolean() => _BoolGen();
+  static Gen<Unit> unit() => _UnitGen();
 
   static Gen<A> oneOf<A>(Iterable<Gen<A>> gens) => _OneOfGen(gens);
 
@@ -34,8 +36,8 @@ extension GenExt<A> on Gen<A> {
   Gen<B> map<B>(B f(A a)) => _MappedGen<A, B>(this, f);
 
   Gen<Kind<F, A>> ap<F>(Applicative<F> AP) => map(AP.pure);
-  Gen<Kind<F, A>> apError<F>(ApplicativeError<F, Exception> AE) =>
-      Gen.applicativeError(this, Gen.exception(), AE);
+  Gen<Kind<F, A>> apError<F, E>(ApplicativeError<F, E> AE, Gen<E> eGen) =>
+      Gen.applicativeError(this, eGen, AE);
 
   Iterable<A> generate(int count) sync* {
     for (var i = 0; i < count; i++) {
@@ -96,4 +98,9 @@ class _BoolGen implements Gen<bool> {
 
   @override
   bool random() => _random.nextBool();
+}
+
+class _UnitGen implements Gen<Unit> {
+  @override
+  Unit random() => Unit();
 }

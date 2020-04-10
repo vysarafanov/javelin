@@ -14,9 +14,10 @@ abstract class Option<A> implements Kind<ForOption, A> {
   static Invariant<ForOption> invariant() => optionTypeInstance;
   static Functor<ForOption> functor() => optionTypeInstance;
   static Applicative<ForOption> applicative() => optionTypeInstance;
+  static ApplicativeError<ForOption, Unit> applicativeError() =>
+      optionTypeInstance;
   static Monad<ForOption> monad() => optionTypeInstance;
-  // static ApplicativeError<ForOption, dynamic> applicativeError() =>
-  //     optoinTypeInstance;
+  static MonadError<ForOption, Unit> monadError() => optionTypeInstance;
   static Show<Option<A>> show<A>() => OptionShow();
   static Eq<Option<A>> eq<A>() => OptionEq();
 }

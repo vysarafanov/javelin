@@ -1,6 +1,7 @@
 import 'package:javelin/javelin_datatype.dart';
 import 'package:test/test.dart';
 
+import '../../gen.dart';
 import '../../law.dart';
 import '../laws/applicative_error_laws.dart';
 import '../laws/applicative_laws.dart';
@@ -45,6 +46,7 @@ Iterable<Law> eitherLaws() sync* {
     Either.applicativeError<Exception>(),
     Either.eq<Exception, int>(),
     Either.eq<Exception, Either<Exception, int>>(),
+    Gen.exception(),
   );
   yield* MonadLaws.laws(
     Either.monad<String>(),

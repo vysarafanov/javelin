@@ -9,22 +9,23 @@ class OptionType
         Functor<ForOption>,
         Apply<ForOption>,
         Applicative<ForOption>,
-        // ApplicativeError<ForOption, void>,
-        Monad<ForOption> {
+        ApplicativeError<ForOption, Unit>,
+        Monad<ForOption>,
+        MonadError<ForOption, Unit> {
   const OptionType._();
 
   ///Applicative
   @override
   Kind<ForOption, A> pure<A>(A a) => Option.of(a);
 
-  // ///ApplicativeError
-  // @override
-  // Kind<ForOption, A> raiseError<A>([_]) => Option.none();
+  ///ApplicativeError
+  @override
+  Kind<ForOption, A> raiseError<A>([_]) => Option.none();
 
-  // @override
-  // Kind<ForOption, A> handleErrorWith<A>(
-  //         Kind<ForOption, A> fa, Kind<ForOption, A> f([_])) =>
-  //     fa.fix().orElse(() => f().fix());
+  @override
+  Kind<ForOption, A> handleErrorWith<A>(
+          Kind<ForOption, A> fa, Kind<ForOption, A> f(Unit e)) =>
+      fa.fix().orElse(() => f(Unit()).fix());
 
   ///Monad
   @override
@@ -33,6 +34,17 @@ class OptionType
     Kind<ForOption, B> f(A a),
   ) =>
       fa.fix().fold(() => Option.none(), f);
+}
+
+class Unit {
+  const Unit();
+
+  @override
+  String toString() => 'Unit';
+  @override
+  bool operator ==(other) => other is Unit;
+  @override
+  int get hashCode => 0;
 }
 
 /*

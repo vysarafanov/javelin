@@ -23,7 +23,8 @@ class MonadErrorLaws {
   static void monadErrorLeftZero<F>(
           MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
       check(forall2(
-          Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().apError(ME)),
+          Gen.functionAtoB<int, Kind<F, int>>(
+              Gen.integer().apError(ME, Gen.exception())),
           Gen.exception(),
           (Kind<F, int> f(int i), Exception e) => ME
               .flatMap(ME.raiseError<int>(e), f)
@@ -32,7 +33,7 @@ class MonadErrorLaws {
   static void monadErrorEnsureConsistency<F>(
           MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
       check(forall3(
-        Gen.integer().apError(ME),
+        Gen.integer().apError(ME, Gen.exception()),
         Gen.exception(),
         Gen.functionAtoB<int, bool>(Gen.boolean()),
         (Kind<F, int> fa, Exception e, bool p(int i)) => ME
@@ -57,9 +58,11 @@ class MonadErrorLaws {
   static void monadErrorDerivesRedeemWith<F>(
           MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
       check(forall3(
-          Gen.integer().apError(ME),
-          Gen.functionAtoB<Exception, Kind<F, int>>(Gen.integer().apError(ME)),
-          Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().apError(ME)),
+          Gen.integer().apError(ME, Gen.exception()),
+          Gen.functionAtoB<Exception, Kind<F, int>>(
+              Gen.integer().apError(ME, Gen.exception())),
+          Gen.functionAtoB<int, Kind<F, int>>(
+              Gen.integer().apError(ME, Gen.exception())),
           (
             Kind<F, int> fa,
             Kind<F, int> fe(Exception e),
@@ -72,7 +75,8 @@ class MonadErrorLaws {
           MonadError<F, Exception> ME, Eq<Kind<F, int>> EQ) =>
       check(forall3(
           Gen.integer().ap(ME),
-          Gen.functionAtoB<Exception, Kind<F, int>>(Gen.integer().apError(ME)),
+          Gen.functionAtoB<Exception, Kind<F, int>>(
+              Gen.integer().apError(ME, Gen.exception())),
           Gen.functionAtoB<int, Kind<F, int>>(Gen.integer().ap(ME)),
           (Kind<F, int> fa, Kind<F, int> fe(Exception e),
                   Kind<F, int> fb(int a)) =>
