@@ -1,4 +1,4 @@
-import 'package:javelin/extension.dart';
+import 'package:javelin/src/extension.dart';
 import 'package:test/test.dart';
 
 import '../law.dart';

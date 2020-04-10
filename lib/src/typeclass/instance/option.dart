@@ -1,4 +1,4 @@
-import 'package:javelin/typeclass.dart';
+import 'package:javelin/src/typeclass.dart';
 import 'package:javelin/src/datatype/option.dart';
 
 final optionTypeInstance = OptionType._();

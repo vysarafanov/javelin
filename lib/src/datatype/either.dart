@@ -1,5 +1,5 @@
-import 'package:javelin/typeclass.dart';
 import 'package:javelin/src/typeclass/instance/either.dart';
+import 'package:javelin/src/typeclass.dart';
 
 class ForEither {
   ForEither._();
