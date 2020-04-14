@@ -58,3 +58,11 @@ class _Right<L, R> extends Either<L, R> {
   @override
   int get hashCode => _r.hashCode;
 }
+
+extension EitherExt<L, A> on Either<L, A> {
+  Either<L, B> map<B>(B f(A a)) => Either.functor<L>().map(this, f);
+  Either<L, B> flatMap<B>(Either<L, B> f(A a)) =>
+      Either.monad<L>().flatMap(this, f);
+  String show() => Either.show().show(this);
+  bool eq(Either<L, A> other) => Either.eq().eqv(this, other);
+}
