@@ -41,13 +41,20 @@ class OptionT<F, A> implements Kind<Kind<ForOptionT, F>, A> {
 
   static Applicative<Kind<ForOptionT, F>> applicative<F>(Monad<F> MF) =>
       OptionTApplicative(MF);
-  static ApplicativeError<Kind<ForOptionT, F>, E> applicativeError<F, E>(
-          MonadError<F, E> ME) =>
-      OptionTApplicativeError(ME);
+  static ApplicativeError<Kind<ForOptionT, F>, Unit> applicativeError<F>(
+          Monad<F> MF) =>
+      OptionTApplicativeError(MF);
   static Monad<Kind<ForOptionT, F>> monad<F>(Monad<F> MF) => OptionTMonad(MF);
-  static MonadError<Kind<ForOptionT, F>, E> monadError<F, E>(
+  static MonadError<Kind<ForOptionT, F>, Unit> monadError<F>(Monad<F> MF) =>
+      OptionTMonadError(MF);
+
+  static ApplicativeError<Kind<ForOptionT, F>, E> applicativeErrorF<F, E>(
           MonadError<F, E> ME) =>
-      OptionTMonadError(ME);
+      OptionTApplicativeErrorF(ME);
+  static MonadError<Kind<ForOptionT, F>, E> monadErrorF<F, E>(
+          MonadError<F, E> ME) =>
+      OptionTMonadErrorF(ME);
+
   static Show<OptionT<F, A>> show<F, A>() => OptionTShow();
   static Eq<OptionT<F, A>> eq<F, A>() => OptionTEq();
 }

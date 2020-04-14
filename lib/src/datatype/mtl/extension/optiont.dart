@@ -55,7 +55,82 @@ class OptionTMonad<F>
       fa.fix().flatMap(MF, f);
 }
 
-class OptionTApplicativeError<F, E>
+class OptionTApplicativeError<F>
+    with
+        Invariant<Kind<ForOptionT, F>>,
+        Functor<Kind<ForOptionT, F>>,
+        Apply<Kind<ForOptionT, F>>,
+        Applicative<Kind<ForOptionT, F>>,
+        Monad<Kind<ForOptionT, F>>,
+        ApplicativeError<Kind<ForOptionT, F>, Unit> {
+  final Monad<F> MF;
+
+  OptionTApplicativeError(this.MF);
+
+  @override
+  Kind<Kind<ForOptionT, F>, A> pure<A>(A a) => OptionT(MF.pure(Option.of(a)));
+
+  @override
+  Kind<Kind<ForOptionT, F>, B> flatMap<A, B>(Kind<Kind<ForOptionT, F>, A> fa,
+          Kind<Kind<ForOptionT, F>, B> f(A a)) =>
+      fa.fix().flatMap(MF, f);
+
+  @override
+  Kind<Kind<ForOptionT, F>, A> raiseError<A>(Unit e) => OptionT.none(MF);
+
+  @override
+  Kind<Kind<ForOptionT, F>, A> handleErrorWith<A>(
+          Kind<Kind<ForOptionT, F>, A> fa,
+          Kind<Kind<ForOptionT, F>, A> f(Unit e)) =>
+      OptionT(
+        MF.flatMap(
+            fa.fix().value,
+            (Option<A> option) => option.fold(
+                  () => f(Unit()).fix().value,
+                  (a) => MF.pure(Option.of(a)),
+                )),
+      );
+}
+
+class OptionTMonadError<F>
+    with
+        Invariant<Kind<ForOptionT, F>>,
+        Functor<Kind<ForOptionT, F>>,
+        Apply<Kind<ForOptionT, F>>,
+        Applicative<Kind<ForOptionT, F>>,
+        Monad<Kind<ForOptionT, F>>,
+        ApplicativeError<Kind<ForOptionT, F>, Unit>,
+        MonadError<Kind<ForOptionT, F>, Unit> {
+  final Monad<F> MF;
+
+  OptionTMonadError(this.MF);
+
+  @override
+  Kind<Kind<ForOptionT, F>, A> pure<A>(A a) => OptionT(MF.pure(Option.of(a)));
+
+  @override
+  Kind<Kind<ForOptionT, F>, B> flatMap<A, B>(Kind<Kind<ForOptionT, F>, A> fa,
+          Kind<Kind<ForOptionT, F>, B> f(A a)) =>
+      fa.fix().flatMap(MF, f);
+
+  @override
+  Kind<Kind<ForOptionT, F>, A> raiseError<A>(Unit e) => OptionT.none(MF);
+
+  @override
+  Kind<Kind<ForOptionT, F>, A> handleErrorWith<A>(
+          Kind<Kind<ForOptionT, F>, A> fa,
+          Kind<Kind<ForOptionT, F>, A> f(Unit e)) =>
+      OptionT(
+        MF.flatMap(
+            fa.fix().value,
+            (Option<A> option) => option.fold(
+                  () => f(Unit()).fix().value,
+                  (a) => MF.pure(Option.of(a)),
+                )),
+      );
+}
+
+class OptionTApplicativeErrorF<F, E>
     with
         Invariant<Kind<ForOptionT, F>>,
         Functor<Kind<ForOptionT, F>>,
@@ -65,7 +140,7 @@ class OptionTApplicativeError<F, E>
         ApplicativeError<Kind<ForOptionT, F>, E> {
   final MonadError<F, E> ME;
 
-  OptionTApplicativeError(this.ME);
+  OptionTApplicativeErrorF(this.ME);
 
   @override
   Kind<Kind<ForOptionT, F>, A> pure<A>(A a) => OptionT(ME.pure(Option.of(a)));
@@ -85,7 +160,7 @@ class OptionTApplicativeError<F, E>
       OptionT(ME.handleErrorWith(fa.fix().value, (e) => f(e).fix().value));
 }
 
-class OptionTMonadError<F, E>
+class OptionTMonadErrorF<F, E>
     with
         Invariant<Kind<ForOptionT, F>>,
         Functor<Kind<ForOptionT, F>>,
@@ -96,7 +171,7 @@ class OptionTMonadError<F, E>
         MonadError<Kind<ForOptionT, F>, E> {
   final MonadError<F, E> ME;
 
-  OptionTMonadError(this.ME);
+  OptionTMonadErrorF(this.ME);
 
   @override
   Kind<Kind<ForOptionT, F>, A> pure<A>(A a) => OptionT(ME.pure(Option.of(a)));
@@ -113,7 +188,7 @@ class OptionTMonadError<F, E>
   Kind<Kind<ForOptionT, F>, A> handleErrorWith<A>(
           Kind<Kind<ForOptionT, F>, A> fa,
           Kind<Kind<ForOptionT, F>, A> f(E e)) =>
-      OptionT(ME.handleErrorWith(fa.fix().value, (E e) => f(e).fix().value));
+      OptionT(ME.handleErrorWith(fa.fix().value, (e) => f(e).fix().value));
 }
 
 class OptionTShow<F, A> implements Show<OptionT<F, A>> {
