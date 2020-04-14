@@ -9,7 +9,9 @@ class AsyncType
         Functor<ForAsync>,
         Apply<ForAsync>,
         Applicative<ForAsync>,
-        Monad<ForAsync> {
+        ApplicativeError<ForAsync, Exception>,
+        Monad<ForAsync>,
+        MonadError<ForAsync, Exception> {
   @override
   Kind<ForAsync, A> pure<A>(A a) => Async.pure(a);
 
@@ -17,4 +19,12 @@ class AsyncType
   Kind<ForAsync, B> flatMap<A, B>(
           Kind<ForAsync, A> fa, Kind<ForAsync, B> f(A a)) =>
       Async(() => fa.fix().program().then((value) => f(value).fix().program()));
+
+  @override
+  Kind<ForAsync, A> raiseError<A>(Exception e) => Async(() => Future.error(e));
+
+  @override
+  Kind<ForAsync, A> handleErrorWith<A>(
+          Kind<ForAsync, A> fa, Kind<ForAsync, A> f(Exception e)) =>
+      Async(() => fa.fix().program().catchError((e) => f(e).fix().program()));
 }

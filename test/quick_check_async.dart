@@ -1,15 +1,11 @@
+import 'package:javelin/src/core.dart';
 import 'package:javelin/src/datatype/datatype_core.dart';
 import 'package:test/test.dart';
 
 import 'gen.dart';
 
-void check(Property property) {
-  expect(property.check(), equals(true));
-}
-
-class Property {
-  final bool Function() check;
-  Property(this.check);
+void checkAsync(PropertyAsync property) {
+  expect(property.checkAsync(), completion(equals(true)));
 }
 
 class PropertyAsync {
@@ -17,73 +13,77 @@ class PropertyAsync {
   PropertyAsync(this.checkAsync);
 }
 
-Property forall<A>(
+PropertyAsync forallAsync<A>(
   Gen<A> aGen,
-  bool property(A a), {
+  Future<bool> property(A a), {
   int iterations = 100,
 }) =>
-    Property(() => aGen.generate(iterations).every(property));
+    PropertyAsync(() => Future.wait(aGen.generate(iterations).map(property))
+        .then((value) => value.every(identity)));
 
-Property forall2<A, B>(
+PropertyAsync forall2Async<A, B>(
   Gen<A> aGen,
   Gen<B> bGen,
-  bool property(A a, B b), {
+  Future<bool> property(A a, B b), {
   int iterations = 100,
 }) =>
-    Property(() => zip2(
+    PropertyAsync(() => Future.wait(zip2(
           aGen.generate(iterations).toList(),
           bGen.generate(iterations).toList(),
           iterations,
-        ).every((tuple) => property(tuple.a, tuple.b)));
+        ).map((tuple) => property(tuple.a, tuple.b)))
+            .then((value) => value.every(identity)));
 
-Property forall3<A, B, C>(
+PropertyAsync forall3Async<A, B, C>(
   Gen<A> aGen,
   Gen<B> bGen,
   Gen<C> cGen,
-  bool property(A a, B b, C c), {
+  Future<bool> property(A a, B b, C c), {
   int iterations = 100,
 }) =>
-    Property(() => zip3(
+    PropertyAsync(() => Future.wait(zip3(
           aGen.generate(iterations).toList(),
           bGen.generate(iterations).toList(),
           cGen.generate(iterations).toList(),
           iterations,
-        ).every((tuple) => property(tuple.a, tuple.b, tuple.c)));
+        ).map((tuple) => property(tuple.a, tuple.b, tuple.c)))
+            .then((value) => value.every(identity)));
 
-Property forall4<A, B, C, D>(
+PropertyAsync forall4Async<A, B, C, D>(
   Gen<A> aGen,
   Gen<B> bGen,
   Gen<C> cGen,
   Gen<D> dGen,
-  bool property(A a, B b, C c, D d), {
+  Future<bool> property(A a, B b, C c, D d), {
   int iterations = 100,
 }) =>
-    Property(() => zip4(
+    PropertyAsync(() => Future.wait(zip4(
           aGen.generate(iterations).toList(),
           bGen.generate(iterations).toList(),
           cGen.generate(iterations).toList(),
           dGen.generate(iterations).toList(),
           iterations,
-        ).every((tuple) => property(tuple.a, tuple.b, tuple.c, tuple.d)));
+        ).map((tuple) => property(tuple.a, tuple.b, tuple.c, tuple.d)))
+            .then((value) => value.every(identity)));
 
-Property forall5<A, B, C, D, E>(
+PropertyAsync forall5Async<A, B, C, D, E>(
   Gen<A> aGen,
   Gen<B> bGen,
   Gen<C> cGen,
   Gen<D> dGen,
   Gen<E> eGen,
-  bool property(A a, B b, C c, D d, E e), {
+  Future<bool> property(A a, B b, C c, D d, E e), {
   int iterations = 100,
 }) =>
-    Property(() => zip5(
+    PropertyAsync(() => Future.wait(zip5(
           aGen.generate(iterations).toList(),
           bGen.generate(iterations).toList(),
           cGen.generate(iterations).toList(),
           dGen.generate(iterations).toList(),
           eGen.generate(iterations).toList(),
           iterations,
-        ).every(
-            (tuple) => property(tuple.a, tuple.b, tuple.c, tuple.d, tuple.e)));
+        ).map((tuple) => property(tuple.a, tuple.b, tuple.c, tuple.d, tuple.e)))
+            .then((value) => value.every(identity)));
 
 Iterable<Tuple2<A, B>> zip2<A, B>(List<A> a, List<B> b, int length) sync* {
   for (var i = 0; i < length; i++) {

@@ -54,7 +54,7 @@ Iterable<Law> eithertLaws<F, E>(MonadError<F, E> ME, Gen<E> eGen) sync* {
     Gen.exception(),
   );
 
-  // ///Additional tests for ApplicativeMonadF
+  ///Additional tests for ApplicativeMonadF
   yield* ApplicativeErrorLaws.laws(
     EitherT.applicativeErrorF<F, Exception, E>(ME),
     EitherT.eq<F, Exception, int>(),
