@@ -9,18 +9,24 @@ class OptionT<F, A> implements Kind<Kind<ForOptionT, F>, A> {
 
   OptionT(this.value);
 
+  static OptionT<F, A> of<F, A>(Applicative<F> AF, A a) =>
+      OptionT(AF.pure(Option.of<A>(a)));
+
+  static OptionT<F, A> none<F, A>(Applicative<F> AF) =>
+      OptionT(AF.pure(Option.none<A>()));
+
+  static OptionT<ForAsync, A> fromAsync<A>(Future<A> fa()) => OptionT(
+        Async(() => fa()
+            .then((value) => Option.of(value))
+            .catchError((error) => Option.none())),
+      );
+
   @override
   String toString() => value.toString();
   @override
   bool operator ==(other) => other is OptionT<F, A> && value == other.value;
   @override
   int get hashCode => value.hashCode;
-
-  static OptionT<F, A> of<F, A>(Applicative<F> AF, A a) =>
-      OptionT(AF.pure(Option.of<A>(a)));
-
-  static OptionT<F, A> none<F, A>(Applicative<F> AF) =>
-      OptionT(AF.pure(Option.none<A>()));
 
   OptionT<F, B> map<B>(Functor<F> FF, B f(A a)) =>
       OptionT(FF.map(value, (Option<A> a) => a.map(f)));

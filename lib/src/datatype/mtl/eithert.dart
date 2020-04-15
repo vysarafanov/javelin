@@ -15,6 +15,13 @@ class EitherT<F, L, R> implements Kind<Kind<Kind<ForEitherT, F>, L>, R> {
   static EitherT<F, L, R> left<F, L, R>(Applicative<F> AF, L l) =>
       EitherT(AF.pure(Either.left(l)));
 
+  static EitherT<ForAsync, Exception, A> fromAsync<A>(Future<A> fa()) =>
+      EitherT(
+        Async(() => fa()
+            .then((value) => Either.right<Exception, A>(value))
+            .catchError((error) => Either.left<Exception, A>(error))),
+      );
+
   EitherT<F, L, B> map<B>(Functor<F> FF, B f(R a)) =>
       EitherT(FF.map(value, (Either<L, R> a) => a.map(f)));
 
