@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 import '../../law.dart';
 import '../../typeclass/laws/applicative_laws.dart';
 import '../../typeclass/laws/eq_laws.dart';
+import '../../typeclass/laws/foldable_laws.dart';
 import '../../typeclass/laws/functor_laws.dart';
 import '../../typeclass/laws/invariant_laws.dart';
 import '../../typeclass/laws/monad_laws.dart';
@@ -36,6 +37,10 @@ Iterable<Law> idLaws() sync* {
   yield* MonadLaws.laws(
     Id.monad(),
     Id.eq<int>(),
+  );
+  yield* FoldableLaws.laws(
+    Id.foldable(),
+    Id.applicative().pure,
   );
 }
 

@@ -9,6 +9,7 @@ part 'typeclass/applicative.dart';
 part 'typeclass/apply.dart';
 part 'typeclass/bifunctor.dart';
 part 'typeclass/eq.dart';
+part 'typeclass/foldable.dart';
 part 'typeclass/functor.dart';
 part 'typeclass/invariant.dart';
 part 'typeclass/monad_error.dart';

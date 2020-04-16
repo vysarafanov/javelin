@@ -12,7 +12,8 @@ class EitherType<L>
         Applicative<Kind<ForEither, L>>,
         ApplicativeError<Kind<ForEither, L>, L>,
         Monad<Kind<ForEither, L>>,
-        MonadError<Kind<ForEither, L>, L> {
+        MonadError<Kind<ForEither, L>, L>,
+        Foldable<Kind<ForEither, L>> {
   ///Applicative
   @override
   Kind<Kind<ForEither, L>, A> pure<A>(A r) => Either.right<L, A>(r);
@@ -42,6 +43,16 @@ class EitherType<L>
     Kind<Kind<ForEither, L>, B> f(A a),
   ) =>
       fa.fix().fold((l) => Either.left(l), f);
+
+  @override
+  B foldLeft<A, B>(
+          Kind<Kind<ForEither, L>, A> fa, B initial, B f(B acc, A a)) =>
+      fa.fix().fold((l) => initial, (a) => f(initial, a));
+
+  @override
+  B foldRight<A, B>(
+          Kind<Kind<ForEither, L>, A> fa, B initial, B f(A a, B acc)) =>
+      fa.fix().fold((l) => initial, (a) => f(a, initial));
 }
 
 /*

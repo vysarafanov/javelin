@@ -1,7 +1,6 @@
 import 'package:javelin/src/datatype/datatype_core.dart';
 import 'package:javelin/src/typeclass.dart';
 
-
 final idTypeInstance = IdType._();
 
 class IdType
@@ -10,7 +9,8 @@ class IdType
         Functor<ForId>,
         Apply<ForId>,
         Applicative<ForId>,
-        Monad<ForId> {
+        Monad<ForId>,
+        Foldable<ForId> {
   const IdType._();
 
   @override
@@ -19,6 +19,14 @@ class IdType
   @override
   Kind<ForId, B> flatMap<A, B>(Kind<ForId, A> fa, Kind<ForId, B> f(A a)) =>
       f(fa.fix().value);
+
+  @override
+  B foldLeft<A, B>(Kind<ForId, A> fa, B initial, B f(B acc, A a)) =>
+      f(initial, fa.fix().value);
+
+  @override
+  B foldRight<A, B>(Kind<ForId, A> fa, B initial, B f(A a, B acc)) =>
+      f(fa.fix().value, initial);
 }
 
 /*

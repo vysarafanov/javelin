@@ -7,6 +7,7 @@ import '../../typeclass/laws/applicative_error_laws.dart';
 import '../../typeclass/laws/applicative_laws.dart';
 import '../../typeclass/laws/bifunctor_laws.dart';
 import '../../typeclass/laws/eq_laws.dart';
+import '../../typeclass/laws/foldable_laws.dart';
 import '../../typeclass/laws/functor_laws.dart';
 import '../../typeclass/laws/invariant_laws.dart';
 import '../../typeclass/laws/monad_error_laws.dart';
@@ -56,6 +57,10 @@ Iterable<Law> eitherLaws() sync* {
     Either.monadError<Exception>(),
     Either.eq<Exception, int>(),
     Gen.exception(),
+  );
+  yield* FoldableLaws.laws(
+    Either.foldable<String>(),
+    Either.applicative<String>().pure,
   );
 }
 

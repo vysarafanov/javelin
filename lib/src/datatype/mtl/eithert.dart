@@ -22,6 +22,10 @@ class EitherT<F, L, R> implements Kind<Kind<Kind<ForEitherT, F>, L>, R> {
             .catchError((error) => Either.left<Exception, A>(error))),
       );
 
+  static EitherT<F, L, R> fromEither<F, L, R>(
+          Applicative<F> AF, Either<L, R> either) =>
+      EitherT(AF.pure(either));
+
   EitherT<F, L, B> map<B>(Functor<F> FF, B f(R a)) =>
       EitherT(FF.map(value, (Either<L, R> a) => a.map(f)));
 

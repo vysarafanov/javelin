@@ -11,7 +11,8 @@ class OptionType
         Applicative<ForOption>,
         ApplicativeError<ForOption, Unit>,
         Monad<ForOption>,
-        MonadError<ForOption, Unit> {
+        MonadError<ForOption, Unit>,
+        Foldable<ForOption> {
   const OptionType._();
 
   ///Applicative
@@ -34,6 +35,14 @@ class OptionType
     Kind<ForOption, B> f(A a),
   ) =>
       fa.fix().fold(() => Option.none(), f);
+
+  @override
+  B foldLeft<A, B>(Kind<ForOption, A> fa, B initial, B f(B acc, A a)) =>
+      fa.fix().fold(() => initial, (a) => f(initial, a));
+
+  @override
+  B foldRight<A, B>(Kind<ForOption, A> fa, B initial, B f(A a, B acc)) =>
+      fa.fix().fold(() => initial, (a) => f(a, initial));
 }
 
 /*

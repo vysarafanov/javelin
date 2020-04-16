@@ -6,6 +6,7 @@ import '../../law.dart';
 import '../../typeclass/laws/applicative_error_laws.dart';
 import '../../typeclass/laws/applicative_laws.dart';
 import '../../typeclass/laws/eq_laws.dart';
+import '../../typeclass/laws/foldable_laws.dart';
 import '../../typeclass/laws/functor_laws.dart';
 import '../../typeclass/laws/invariant_laws.dart';
 import '../../typeclass/laws/monad_error_laws.dart';
@@ -50,6 +51,10 @@ Iterable<Law> optionLaws() sync* {
     Option.monadError(),
     Option.eq<int>(),
     Gen.unit(),
+  );
+  yield* FoldableLaws.laws(
+    Option.foldable(),
+    Option.applicative().pure,
   );
 }
 

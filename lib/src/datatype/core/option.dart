@@ -17,6 +17,7 @@ abstract class Option<A> implements Kind<ForOption, A> {
       optionTypeInstance;
   static Monad<ForOption> monad() => optionTypeInstance;
   static MonadError<ForOption, Unit> monadError() => optionTypeInstance;
+  static Foldable<ForOption> foldable() => optionTypeInstance;
   static Show<Option<A>> show<A>() => OptionShow();
   static Eq<Option<A>> eq<A>() => OptionEq();
 }

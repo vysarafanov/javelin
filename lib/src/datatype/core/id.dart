@@ -20,6 +20,7 @@ class Id<A> implements Kind<ForId, A> {
   static Functor<ForId> functor() => idTypeInstance;
   static Applicative<ForId> applicative() => idTypeInstance;
   static Monad<ForId> monad() => idTypeInstance;
+  static Foldable<ForId> foldable() => idTypeInstance;
   static Show<Id<A>> show<A>() => IdShow<A>();
   static Eq<Id<A>> eq<A>() => IdEq<A>();
 }
