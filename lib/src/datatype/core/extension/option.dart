@@ -12,7 +12,8 @@ class OptionType
         ApplicativeError<ForOption, Unit>,
         Monad<ForOption>,
         MonadError<ForOption, Unit>,
-        Foldable<ForOption> {
+        Foldable<ForOption>,
+        Traverse<ForOption> {
   const OptionType._();
 
   ///Applicative
@@ -43,6 +44,15 @@ class OptionType
   @override
   B foldRight<A, B>(Kind<ForOption, A> fa, B initial, B f(A a, B acc)) =>
       fa.fix().fold(() => initial, (a) => f(a, initial));
+
+  @override
+  Kind<G, Kind<ForOption, B>> traverse<G, A, B>(
+    Kind<ForOption, A> fa,
+    Applicative<G> AG,
+    Kind<G, B> f(A a),
+  ) =>
+      fa.fix().fold(() => AG.pure(Option.none()),
+          (a) => AG.map(f(a), (B b) => Option.of(b)));
 }
 
 /*

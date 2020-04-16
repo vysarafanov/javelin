@@ -1,3 +1,4 @@
+import 'package:javelin/javelin.dart';
 import 'package:javelin/src/datatype/datatype_core.dart';
 import 'package:test/test.dart';
 
@@ -9,6 +10,7 @@ import '../../typeclass/laws/functor_laws.dart';
 import '../../typeclass/laws/invariant_laws.dart';
 import '../../typeclass/laws/monad_laws.dart';
 import '../../typeclass/laws/show_laws.dart';
+import '../../typeclass/laws/traverse_laws.dart';
 
 Iterable<Law> idLaws() sync* {
   yield* ShowLaws.laws(
@@ -42,9 +44,14 @@ Iterable<Law> idLaws() sync* {
     Id.foldable(),
     Id.applicative().pure,
   );
+  yield* TraverseLaws.laws(
+    Id.traverse(),
+    Id.applicative().pure,
+    Id.eq<int>(),
+  );
 }
 
-void main() {
+void main() async {
   group('Id type:', () {
     idLaws().check();
   });

@@ -10,7 +10,8 @@ class IdType
         Apply<ForId>,
         Applicative<ForId>,
         Monad<ForId>,
-        Foldable<ForId> {
+        Foldable<ForId>,
+        Traverse<ForId> {
   const IdType._();
 
   @override
@@ -27,6 +28,17 @@ class IdType
   @override
   B foldRight<A, B>(Kind<ForId, A> fa, B initial, B f(A a, B acc)) =>
       f(fa.fix().value, initial);
+
+  @override
+  Kind<G, Kind<ForId, B>> traverse<G, A, B>(
+    Kind<ForId, A> fa,
+    Applicative<G> AG,
+    Kind<G, B> f(A a),
+  ) =>
+      AG.map(
+        f(fa.fix().value),
+        (value) => Id(value),
+      );
 }
 
 /*

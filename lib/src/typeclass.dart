@@ -17,3 +17,4 @@ part 'typeclass/monad.dart';
 part 'typeclass/monoid.dart';
 part 'typeclass/semigroup.dart';
 part 'typeclass/show.dart';
+part 'typeclass/traverse.dart';

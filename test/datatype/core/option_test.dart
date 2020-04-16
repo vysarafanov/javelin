@@ -12,6 +12,7 @@ import '../../typeclass/laws/invariant_laws.dart';
 import '../../typeclass/laws/monad_error_laws.dart';
 import '../../typeclass/laws/monad_laws.dart';
 import '../../typeclass/laws/show_laws.dart';
+import '../../typeclass/laws/traverse_laws.dart';
 
 Iterable<Law> optionLaws() sync* {
   yield* ShowLaws.laws(
@@ -55,6 +56,11 @@ Iterable<Law> optionLaws() sync* {
   yield* FoldableLaws.laws(
     Option.foldable(),
     Option.applicative().pure,
+  );
+  yield* TraverseLaws.laws(
+    Option.traverse(),
+    Option.applicative().pure,
+    Option.eq<int>(),
   );
 }
 
