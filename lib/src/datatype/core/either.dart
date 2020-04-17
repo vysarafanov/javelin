@@ -66,4 +66,6 @@ extension EitherExt<L, A> on Either<L, A> {
       Either.monad<L>().flatMap(this, f);
   String show() => Either.show().show(this);
   bool eq(Either<L, A> other) => Either.eq().eqv(this, other);
+  // Kind<F, Either<L, B>> traverse<F, B>(Applicative<F> AF, Kind<F, B> f(A a)) =>
+  //     Either.traverse().traverse(this, AF, f);
 }

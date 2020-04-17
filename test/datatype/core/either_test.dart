@@ -70,6 +70,8 @@ Iterable<Law> eitherLaws() sync* {
   );
 }
 
+Id<int> plus1(int value) => Id(value + 1);
+
 void main() {
   group('Either type', () {
     eitherLaws().check();
