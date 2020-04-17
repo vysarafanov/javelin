@@ -24,23 +24,6 @@ class ListJ<A> extends DelegatingList<A> implements Kind<ForList, A> {
           (A a, Kind<F, ListJ<B>> acc) =>
               AF.ap(f(a), AF.map(acc, (ListJ<B> l) => (B a) => ([a] + l).j())));
 
-  /*
-   foldRight(Eval.now(GA.just(emptyList<B>().k()))) { a, eval ->
-      GA.run { 
-        f(a).apEval(
-          eval.map { 
-            it.map { xs -> 
-            { a: B -> (
-              listOf(a) + xs
-              ).k() 
-            } 
-            } 
-          }
-        ) 
-      }
-    }.value()
-    */
-
   static ListJ<A> emptyJ<A>() => <A>[].j();
   static ListJ<A> pureJ<A>(A a) => [a].j();
 

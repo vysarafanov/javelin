@@ -21,8 +21,11 @@ class TraverseLaws {
           Gen.functionAtoB<int, Kind<ForId, int>>(
               Gen.integer().map(Id.applicative().pure)),
           Gen.integer().map(cf),
-          (Kind<ForId, int> f(int i), Kind<F, int> fa) =>
-              TF.traverse(fa, Id.applicative(), f).fix().value.equalUnderTheLaw(
+          (Kind<ForId, int> f(int i), Kind<F, int> fa) => TF
+              .traverse<ForId, int, int>(fa, Id.applicative(), f)
+              .fix()
+              .value
+              .equalUnderTheLaw(
                   EQ,
                   TF.map(
                     TF.map(fa, f),

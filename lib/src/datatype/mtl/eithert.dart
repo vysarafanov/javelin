@@ -79,3 +79,7 @@ class EitherT<F, L, R> implements Kind<Kind<Kind<ForEitherT, F>, L>, R> {
 extension EitherTK<F, L, R> on Kind<Kind<Kind<ForEitherT, F>, L>, R> {
   EitherT<F, L, R> fix() => this as EitherT<F, L, R>;
 }
+
+extension EitherTAsyncExt<L, R> on EitherT<ForAsync, L, R> {
+  Future<Either<L, R>> unsafeRun() => value.fix().unsafeRun();
+}

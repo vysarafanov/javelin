@@ -20,6 +20,8 @@ class Async<A> implements Kind<ForAsync, A> {
   static MonadError<ForAsync, Exception> monadError() => asyncTypeInstance;
   // static Show<Async<A>> show<A>() => AsyncShow<A>();
   // static Eq<Async<A>> eq<A>() => AsyncEq<A>();
+
+  Future<A> unsafeRun() => program();
 }
 
 extension AsyncK<A> on Kind<ForAsync, A> {
