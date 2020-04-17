@@ -21,8 +21,10 @@ class ListJ<A> extends DelegatingList<A> implements Kind<ForList, A> {
   Kind<F, ListJ<B>> traverse<F, B>(Applicative<F> AF, Kind<F, B> f(A a)) =>
       foldRight(
           AF.pure<ListJ<B>>(ListJ.emptyJ<B>()),
-          (A a, Kind<F, ListJ<B>> acc) =>
-              AF.ap(f(a), AF.map(acc, (ListJ<B> l) => (B a) => ([a] + l).j())));
+          (A a, Kind<F, ListJ<B>> acc) => AF.ap(
+              f(a),
+              AF.map<ListJ<B>, ListJ<B> Function(B b)>(
+                  acc, (ListJ<B> l) => (B a) => ([a] + l).j())));
 
   static ListJ<A> emptyJ<A>() => <A>[].j();
   static ListJ<A> pureJ<A>(A a) => [a].j();
