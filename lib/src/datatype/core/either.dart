@@ -7,6 +7,13 @@ class ForEither {
 abstract class Either<L, R> implements Kind<Kind<ForEither, L>, R> {
   static Either<L, R> right<L, R>(R r) => _Right._(r);
   static Either<L, R> left<L, R>(L l) => _Left._(l);
+  static Either<Exception, R> tryCatch<R>(R f()) {
+    try {
+      return Either.right(f());
+    } catch (e) {
+      return Either.left(e);
+    }
+  }
 
   B fold<B>(B ifLeft(L l), B ifRight(R r));
 
