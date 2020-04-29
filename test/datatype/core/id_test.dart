@@ -35,6 +35,7 @@ Iterable<Law> idLaws() sync* {
   yield* ApplicativeLaws.laws(
     Id.applicative(),
     Id.eq<int>(),
+    Id.eq<Tuple3<int, int, int>>(),
   );
   yield* MonadLaws.laws(
     Id.monad(),

@@ -43,6 +43,7 @@ Iterable<Law> eitherLaws() sync* {
   yield* ApplicativeLaws.laws(
     Either.applicative<String>(),
     Either.eq<String, int>(),
+    Either.eq<String, Tuple3<int, int, int>>(),
   );
   yield* ApplicativeErrorLaws.laws(
     Either.applicativeError<Exception>(),

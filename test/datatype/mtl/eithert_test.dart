@@ -37,6 +37,7 @@ Iterable<Law> eithertLaws<F, E>(MonadError<F, E> ME, Gen<E> eGen) sync* {
   yield* ApplicativeLaws.laws(
     EitherT.applicative<F, Exception>(ME),
     EitherT.eq<F, Exception, int>(),
+    EitherT.eq<F, Exception, Tuple3<int, int, int>>(),
   );
   yield* ApplicativeErrorLaws.laws(
     EitherT.applicativeError<F, Exception>(ME),

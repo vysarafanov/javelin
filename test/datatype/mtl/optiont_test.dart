@@ -37,6 +37,7 @@ Iterable<Law> optiontLaws<F, E>(MonadError<F, E> ME, Gen<E> eGen) sync* {
   yield* ApplicativeLaws.laws(
     OptionT.applicative(ME),
     OptionT.eq<F, int>(),
+    OptionT.eq<F, Tuple3<int, int, int>>(),
   );
   yield* ApplicativeErrorLaws.laws(
     OptionT.applicativeError(ME),

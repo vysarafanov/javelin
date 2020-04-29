@@ -1,3 +1,4 @@
+import 'package:javelin/src/datatype/datatype_core.dart';
 import 'package:javelin/src/datatype/datatype_std.dart';
 import 'package:test/test.dart';
 
@@ -34,6 +35,7 @@ Iterable<Law> listJLaws() sync* {
   yield* ApplicativeLaws.laws(
     ListJ.applicative(),
     ListJ.eq<int>(),
+    ListJ.eq<Tuple3<int, int, int>>(),
   );
   yield* MonadLaws.laws(
     ListJ.monad(),

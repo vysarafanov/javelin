@@ -37,6 +37,7 @@ Iterable<Law> optionLaws() sync* {
   yield* ApplicativeLaws.laws(
     Option.applicative(),
     Option.eq<int>(),
+    Option.eq<Tuple3<int, int, int>>(),
   );
   yield* ApplicativeErrorLaws.laws(
     Option.applicativeError(),
