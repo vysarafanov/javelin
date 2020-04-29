@@ -16,9 +16,9 @@ extension ApplyExt<F> on Apply<F> {
 
   Kind<F, Z> map2<A, B, Z>(
           Kind<F, A> fa, Kind<F, B> fb, Z f(Tuple2<A, B> ab)) =>
-      map(product(fa, fb), f);
+      map<Tuple2<A, B>, Z>(product<A, B>(fa, fb), f);
 
   Kind<F, Z> map3<A, B, C, Z>(Kind<F, A> fa, Kind<F, B> fb, Kind<F, C> fc,
           Z f(Tuple3<A, B, C> abc)) =>
-      map(product2(product(fa, fb), fc), f);
+      map<Tuple3<A, B, C>, Z>(product2<A, B, C>(product<A, B>(fa, fb), fc), f);
 }

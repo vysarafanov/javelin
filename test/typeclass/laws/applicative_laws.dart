@@ -57,8 +57,8 @@ class ApplicativeLaws {
           Gen.integer(),
           Gen.integer(),
           (int a, int b, int c) => AP
-              .map3(AP.pure(a), AP.pure(b), AP.pure(c),
-                  (Tuple3<int, int, int> abc) => abc)
+              .map3<int, int, int, Tuple3<int, int, int>>(AP.pure(a),
+                  AP.pure(b), AP.pure(c), (Tuple3<int, int, int> abc) => abc)
               .equalUnderTheLaw(
                   EQ,
                   AP.pure<Tuple3<int, int, int>>(
